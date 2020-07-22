@@ -11,7 +11,8 @@ class PendingTweetsManager:
         return cls._instance
 
     def __init__(self):
-        self.pending_tweets: Dict[int, TweetContent] = {}
+        if not hasattr(self, "pending_tweets"):
+            self.pending_tweets: Dict[int, TweetContent] = {}
 
     def add(self, tweet_id: int, content: TweetContent):
         self.pending_tweets[tweet_id] = content
