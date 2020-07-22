@@ -41,8 +41,7 @@ Dagger_TweetManagementSystem_Daggerが止まってしまったので開発して
   - [X] `info-management`: ユーザーから得た情報を管理することができる。
   - [ ] `reaction`: リアクションを用いて可否を確認することができる。
   - [ ] `final-judge`: ツイートをするかどうかの最終判断ができる。
-  - [ ] `connect-firebase`:  ユーザーから得た情報をFirebase上で管理することができる。
 - [ ] `tweet-base`: Twitterにツイートすることができる。
   - [ ] `twitter-api`: 任意のツイートをすることができる。
   - [ ] `tweet`: 可決されたツイートを送信することができる。
-  - [ ] `connect-firebase`: ツイート後にFirebaseから情報を削除することができる。
+  - [ ] `autodelete-vote`: ツイート後に自動で投票を削除することができる。
