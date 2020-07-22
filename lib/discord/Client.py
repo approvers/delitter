@@ -23,29 +23,29 @@ class MainClient(discord.Client):
         Botを起動する。
         Botが何らかの理由で終了するまで処理は停止する。
         """
-        log("client", "Login started")
+        log("client-login", "ログイン処理を開始します。")
         self.run(self.setting.token)
 
     async def on_ready(self):
-        log("client", "Bot ready. Validating condition...")
+        log("client-login", "ログインに成功しました。適切な設定が行われているか確認しています。")
         self.activity_channel = self.get_channel(self.setting.activity_channel_id)
 
         if self.activity_channel is None:
             raise RuntimeError("Activity channel is not found! Check your \"activity_channel_id\" value.")
 
-        log("client", "No errors found! Greeting to server.")
+        log("client-login", "設定に問題はありませんでした。起動メッセージを送信します…")
         await self.activity_channel.send("***†Delitter Ready†***")
 
     async def on_message(self, message: discord.Message):
         if message.author.bot or message.channel.id != self.setting.activity_channel_id:
-            log("client", "メッセージはBotからのものか、Activity Channelではないところで発言されたものでした。無視します！")
+            log("client-msg", "メッセージはBotからのものか、Activity Channelではないところで発言されたものでした。無視します！")
             return
 
         if not message.content.startswith(self.setting.prefix):
-            log("client", "メッセージは処理対象でしたが、Prefix「{}」がありませんでした。無視します！".format(self.setting.prefix))
+            log("client-msg", "メッセージは処理対象でしたが、Prefix「{}」がありませんでした。無視します！".format(self.setting.prefix))
             return
 
-        log("client", "処理対象のメッセージを受信しました:\n{}".format(message.content))
+        log("client-msg", "処理対象のメッセージを受信しました:\n{}".format(message.content))
         await message.channel.send("Does some carbon-based form said, `{}`?".format(message.content))
 
 
