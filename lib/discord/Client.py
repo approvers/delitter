@@ -36,6 +36,19 @@ class MainClient(discord.Client):
         log("client", "No errors found! Greeting to server.")
         await self.activity_channel.send("***†Delitter Ready†***")
 
+    async def on_message(self, message: discord.Message):
+        if message.author.bot or message.channel.id != self.setting.activity_channel_id:
+            log("client", "メッセージはBotからのものか、Activity Channelではないところで発言されたものでした。無視します！")
+            return
+
+        if not message.content.startswith(self.setting.prefix):
+            log("client", "メッセージは処理対象でしたが、Prefix「{}」がありませんでした。無視します！".format(self.setting.prefix))
+            return
+
+        log("client", "処理対象のメッセージを受信しました:\n{}".format(message.content))
+        await message.channel.send("Does some carbon-based form said, `{}`?".format(message.content))
+
+
 
 
 
