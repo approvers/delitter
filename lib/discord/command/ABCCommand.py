@@ -2,6 +2,7 @@ from abc import ABCMeta, abstractmethod
 
 import discord
 
+from lib.discord import Client
 from lib.discord.command.CommandInfo import CommandInfo
 
 
@@ -9,6 +10,15 @@ class ABCCommand(metaclass=ABCMeta):
     """
     コマンドの抽象クラス。
     """
+
+    @abstractmethod
+    def __init__(self, client: Client):
+        """
+        インスタンスを初期化する。
+        初期化はBotのログイン直後に行われる。
+        :param client: ログイン直後のBot。
+        """
+        pass
 
     @abstractmethod
     def get_command_info(self) -> CommandInfo:
