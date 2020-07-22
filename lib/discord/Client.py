@@ -103,6 +103,10 @@ class MainClient(discord.Client):
             message
         )
 
+    async def on_reaction_add(self, reaction: discord.Reaction, user: discord.Member):
+        await ReactionEvent.on_reaction_add(reaction, user, self.setting)
+
+
     def get_help_message(self):
         help_message = "***†Delitter†***\nツイートを審議するためのBotです。"
         for cmd in self.__commands.values():
