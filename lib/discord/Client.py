@@ -3,7 +3,8 @@ from typing import Dict, Type, List
 import discord
 
 from lib.discord.Setting import Setting
-from lib.discord.command.ABCCommand import ABCCommand
+from lib.discord.op.command.ABCCommand import ABCCommand
+from lib.discord.op.event import ReactionEvent
 from lib.logging.Logger import log
 
 
@@ -101,6 +102,15 @@ class MainClient(discord.Client):
             message.content[len(cmd_header) + 1:],
             message
         )
+
+    async def on_reaction_add(self, reaction: discord.Reaction, user: discord.Member):
+        await ReactionEvent.on_reaction_add(reaction, user, self.setting)
+
+    async def on_reaction_remove(self, reaction: discord.Reaction, user: discord.Member):
+        await ReactionEvent.on_reaction_remove(reaction, user, self.setting)
+
+    async def on_reaction_clear(self, message: discord.Message, reactions: List[discord.Reaction]):
+        await ReactionEvent.on_reaction_clear(message)
 
     def get_help_message(self):
         help_message = "***†Delitter†***\nツイートを審議するためのBotです。"

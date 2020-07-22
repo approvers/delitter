@@ -39,7 +39,7 @@ Dagger_TweetManagementSystem_Daggerが止まってしまったので開発して
   - [X] `client`: サーバーに挨拶をすることができる。
   - [X] `acquire-info`: ユーザーから**適切な**情報を取得することができる。
   - [X] `info-management`: ユーザーから得た情報を管理することができる。
-  - [ ] `reaction`: リアクションを用いて可否を確認することができる。
+  - [X] `reaction`: リアクションを用いて可否を確認することができる。
   - [ ] `final-judge`: ツイートをするかどうかの最終判断ができる。
 - [ ] `tweet-base`: Twitterにツイートすることができる。
   - [ ] `twitter-api`: 任意のツイートをすることができる。
