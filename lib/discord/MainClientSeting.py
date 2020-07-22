@@ -9,12 +9,14 @@ class MainClientSetting:
     def __init__(self,
                  token: str,
                  activity_channel_id: int,
+                 prefix: str
                  ):
         """
         MainClientクラスで使用する設定を保持するクラス。
         :param token: ログインに使用するトークン。
                       Noneが渡された場合はDISCORD_TOKEN環境変数からの読み出しを試みる。
         :param activity_channel_id: 動作するチャンネル。
+        :param prefix: Botのプレフィックス。
         """
 
         if token is None and "DISCORD_TOKEN" not in os.environ:
@@ -22,6 +24,7 @@ class MainClientSetting:
 
         self.token = os.environ["DISCORD_TOKEN"] if token is None else token
         self.activity_channel_id = activity_channel_id
+        self.prefix = prefix
 
     @classmethod
     def load_from_json(cls, file: TextIO):
@@ -35,5 +38,6 @@ class MainClientSetting:
 
         return MainClientSetting(
             raw_json["token"],
-            raw_json["activity_channel_id"]
+            raw_json["activity_channel_id"],
+            raw_json["prefix"],
         )
