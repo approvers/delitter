@@ -11,6 +11,7 @@ class MainClientSetting:
                  token: str,
                  activity_channel_id: int,
                  prefix: str,
+                 suffrage_role_id: int,
                  emoji_ids: Dict[str, int],
                  ):
         """
@@ -27,6 +28,7 @@ class MainClientSetting:
         self.token = os.environ["DISCORD_TOKEN"] if token is None else token
         self.activity_channel_id = activity_channel_id
         self.prefix = prefix
+        self.suffrage_role_id = suffrage_role_id
         self.emoji_ids = emoji_ids
 
     @classmethod
