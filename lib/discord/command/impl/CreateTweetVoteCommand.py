@@ -2,10 +2,10 @@ import re
 import unicodedata
 from abc import ABC
 from math import ceil
-from typing import Dict
 
 import discord
 
+from lib.data.PendingTweetsManager import PendingTweetsManager
 from lib.discord.Client import MainClient
 from lib.discord.command.ABCCommand import ABCCommand
 from lib.discord.command.CommandInfo import CommandInfo
@@ -18,7 +18,7 @@ class CreateTweetVoteCommand(ABCCommand, ABC):
 
     def __init__(self, client: MainClient):
         super().__init__(client)
-        self.pending_tweets: Dict[int, TweetContent] = {}
+        self.pending_tweets_manager = PendingTweetsManager()
         self.suffrage_mention = \
             client.get_guild(client.setting.guild_id).get_role(client.setting.suffrage_role_id).mention
         self.emoji = {
@@ -31,7 +31,7 @@ class CreateTweetVoteCommand(ABCCommand, ABC):
             identify="create",
             args_format="(ツイートの内容)",
             name="ツイートを作成する",
-            description="ツイートしたい内容を"
+            description="ツイートしたい内容を登録し、投票を開始する"
         )
 
     async def parse_command(self, text: str, message: discord.Message):
@@ -64,8 +64,8 @@ class CreateTweetVoteCommand(ABCCommand, ABC):
         await sent_message.edit(content="{}の皆さん、投票のお時間ですわよ！".format(self.suffrage_mention), embed=new_embed)
 
         # 保存してDone
-        self.pending_tweets[sent_message.id] = tweet_content
-        log("command-create", "以下のコンテンツを登録しました:\n{}".format(tweet_content))
+        self.pending_tweets_manager.add(sent_message.id, tweet_content)
+        log("command-create", "以下のコンテンツを登録しました:\nID: {}\n{}".format(sent_message.id, tweet_content))
 
 
 def validate_tweet(text) -> str:

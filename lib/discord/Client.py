@@ -79,6 +79,11 @@ class MainClient(discord.Client):
 
         cmd_header = message.content.split(" ")[0]
         cmd_identity = cmd_header[len(self.__setting.prefix):]
+
+        if cmd_identity in ["", "help"]:
+            await message.channel.send(self.get_help_message())
+            return
+
         if cmd_identity not in self.__commands:
             log("client-msg", "コマンドが見つかりませんでした: 「{}」".format(cmd_identity))
             await self.__activity_channel.send("知らないコマンドが出てきました:thinking:")
@@ -89,6 +94,12 @@ class MainClient(discord.Client):
             message
         )
 
+    def get_help_message(self):
+        help_message = "***†Delitter†***\nツイートを審議するためのBotです。"
+        for cmd in self.__commands.values():
+            info = cmd.get_command_info()
+            help_message += "```{}{} {}\n  {}```".format(self.__setting.prefix, info.identify, info.name, info.description)
+        return help_message
 
 
 
