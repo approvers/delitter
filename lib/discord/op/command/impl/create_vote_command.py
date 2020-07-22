@@ -1,3 +1,8 @@
+"""
+create_vote_command.py
+------------------------
+投票を作成するためのコマンドが入っている。
+"""
 import re
 import unicodedata
 from abc import ABC
@@ -5,26 +10,28 @@ from math import ceil
 
 import discord
 
-from lib.data.PendingTweetsManager import PendingTweetsManager
-from lib.data.TweetVote import TweetVote
-from lib.discord.op.command.ABCCommand import ABCCommand
-from lib.discord.op.command.CommandInfo import CommandInfo
-from lib.logging.Logger import log
-from lib.settings.Setting import Setting
+from lib.data.tweet_vote import TweetVote
+from lib.data.tweet_votes_record import TweetsVoteRecord
+from lib.discord.op.command.abc_command import ABCCommand
+from lib.discord.op.command.command_property import CommandProperty
+from lib.logging.logger import log
+from lib.settings.setting import Setting
 
 
-class CreateTweetVoteCommand(ABCCommand, ABC):
+class CreateVoteCommand(ABCCommand, ABC):
+    """
+    ツイートを作成するコマンド。
+    """
     SPECIAL_CHARACTER_REGEX: re.Pattern = re.compile("<[@#:].*?>")
 
     def __init__(self, guild: discord.Guild, setting: Setting):
         super().__init__(guild, setting)
-        self.pending_tweets_manager = PendingTweetsManager()
         self.suffrage_mention = guild.get_role(setting.suffrage_role_id).mention
         self.guild = guild
         self.emoji_ids = setting.emoji_ids
 
-    def get_command_info(self) -> CommandInfo:
-        return CommandInfo(
+    def get_command_info(self) -> CommandProperty:
+        return CommandProperty(
             identify="create",
             args_format="(ツイートの内容)",
             name="ツイートを作成する",
@@ -61,7 +68,7 @@ class CreateTweetVoteCommand(ABCCommand, ABC):
         await sent_message.edit(content="{}の皆さん、投票のお時間ですわよ！".format(self.suffrage_mention), embed=new_embed)
 
         # 保存してDone
-        self.pending_tweets_manager.add(sent_message.id, tweet_content)
+        TweetsVoteRecord().add(sent_message.id, tweet_content)
         log("command-create", "以下のコンテンツを登録しました:\nID: {}\n{}".format(sent_message.id, tweet_content))
 
 
@@ -83,7 +90,7 @@ def validate_tweet(text) -> str:
         return "文字列が極端に短いみたいです:thinking:\n" \
                "1文字(英数字の場合は2文字です)も入ってないみたいです。"
 
-    if CreateTweetVoteCommand.SPECIAL_CHARACTER_REGEX.match(text) is not None:
+    if CreateVoteCommand.SPECIAL_CHARACTER_REGEX.match(text) is not None:
         log("command-create", "特殊な文字列が含まれています。")
         return "特殊な文字列が含まれています:thinking:\n" \
                "メンションやこの鯖独自の絵文字(<:ahe:724540322322972723>とか)はツイートできません。使えたら面白いんだけどな〜"
