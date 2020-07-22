@@ -27,8 +27,8 @@ async def on_reaction_add(reaction: discord.Reaction, user: discord.Member, sett
     await reaction.message.edit(embed=tweet_vote.to_embed())
 
     return (
-            (tweet_vote.approves + tweet_vote.deny) > setting.approve_total and
-            tweet_vote.approves / (tweet_vote.approves + tweet_vote.denys) * 100 > setting.approve_rate
+            (tweet_vote.approves + tweet_vote.denys) >= setting.approve_total and
+            tweet_vote.approves / (tweet_vote.approves + tweet_vote.denys) * 100 >= setting.approve_rate
     )
 
 
