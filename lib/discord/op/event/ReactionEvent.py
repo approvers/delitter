@@ -1,8 +1,8 @@
 import discord
 
 from lib.data.PendingTweetsManager import PendingTweetsManager
-from lib.discord.Setting import Setting
 from lib.logging.Logger import log
+from lib.settings.Setting import Setting
 
 
 async def on_reaction_add(reaction: discord.Reaction, user: discord.Member, setting: Setting):

@@ -2,10 +2,10 @@ from typing import Dict, Type, List
 
 import discord
 
-from lib.discord.Setting import Setting
 from lib.discord.op.command.ABCCommand import ABCCommand
 from lib.discord.op.event import ReactionEvent
 from lib.logging.Logger import log
+from lib.settings.Setting import Setting
 
 
 class MainClient(discord.Client):
