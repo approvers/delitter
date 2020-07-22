@@ -11,7 +11,6 @@ class Setting:
                  token: str,
                  activity_channel_id: int,
                  prefix: str,
-                 guild_id: int,
                  suffrage_role_id: int,
                  emoji_ids: Dict[str, int],
                  ):
@@ -29,7 +28,6 @@ class Setting:
         self.token = os.environ["DISCORD_TOKEN"] if token is None else token
         self.activity_channel_id = activity_channel_id
         self.prefix = prefix
-        self.guild_id = guild_id
         self.suffrage_role_id = suffrage_role_id
         self.emoji_ids = emoji_ids
 
@@ -47,7 +45,6 @@ class Setting:
             raw_json["token"],
             raw_json["activity_channel_id"],
             raw_json["prefix"],
-            raw_json["guild_id"],
             raw_json["suffrage_role_id"],
             raw_json["emoji_ids"]
         )
