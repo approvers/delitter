@@ -3,9 +3,9 @@ from abc import ABC
 import discord
 
 from lib.data.PendingTweetsManager import PendingTweetsManager
-from lib.discord.Setting import Setting
 from lib.discord.op.command.ABCCommand import ABCCommand
 from lib.discord.op.command.CommandInfo import CommandInfo
+from lib.settings.Setting import Setting
 
 
 class DeleteTweetVoteCommand(ABCCommand, ABC):

@@ -1,20 +1,20 @@
 import discord
 
 from lib.data.PendingTweetsManager import PendingTweetsManager
-from lib.discord.Setting import Setting
 from lib.logging.Logger import log
+from lib.settings.Setting import Setting
 
 
-async def on_reaction_add(reaction: discord.Reaction, user: discord.Member, setting: Setting):
+async def on_reaction_add(reaction: discord.Reaction, user: discord.Member, setting: Setting) -> bool:
 
     if user.bot:
-        return
+        return False
 
     log("react-add", "{}がリアクションを追加しました。".format(user.name))
 
     if validate_reaction(reaction, user, setting):
         await reaction.message.remove_reaction(reaction.emoji, user)
-        return
+        return False
 
     manager = PendingTweetsManager()
     tweet_vote = manager.get(reaction.message.id)
@@ -25,6 +25,11 @@ async def on_reaction_add(reaction: discord.Reaction, user: discord.Member, sett
         tweet_vote.denys += 1
 
     await reaction.message.edit(embed=tweet_vote.to_embed())
+
+    return (
+            (tweet_vote.approves + tweet_vote.denys) >= setting.approve_total and
+            tweet_vote.approves / (tweet_vote.approves + tweet_vote.denys) * 100 >= setting.approve_rate
+    )
 
 
 async def on_reaction_remove(reaction: discord.Reaction, user: discord.Member, setting: Setting):

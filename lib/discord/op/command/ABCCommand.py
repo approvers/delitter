@@ -2,8 +2,8 @@ from abc import ABCMeta, abstractmethod
 
 import discord
 
-from lib.discord.Setting import Setting
 from lib.discord.op.command.CommandInfo import CommandInfo
+from lib.settings.Setting import Setting
 
 
 class ABCCommand(metaclass=ABCMeta):
