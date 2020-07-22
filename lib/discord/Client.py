@@ -1,6 +1,9 @@
+from typing import Dict
+
 import discord
 
 from lib.discord.MainClientSeting import MainClientSetting
+from lib.discord.command.ABCCommand import ABCCommand
 from lib.logging.Logger import log
 
 
@@ -17,6 +20,7 @@ class MainClient(discord.Client):
         super(MainClient, self).__init__()
         self.setting: MainClientSetting = setting
         self.activity_channel: discord.TextChannel = None
+        self.commands: Dict[str, ABCCommand] = {}
 
     def launch(self):
         """
@@ -25,6 +29,9 @@ class MainClient(discord.Client):
         """
         log("client-login", "ログイン処理を開始します。")
         self.run(self.setting.token)
+
+    def add_command(self, command: ABCCommand):
+        self.commands[command.get_command_info().identify] = command
 
     async def on_ready(self):
         log("client-login", "ログインに成功しました。適切な設定が行われているか確認しています。")
@@ -46,7 +53,17 @@ class MainClient(discord.Client):
             return
 
         log("client-msg", "処理対象のメッセージを受信しました:\n{}".format(message.content))
-        await message.channel.send("Does some carbon-based form said, `{}`?".format(message.content))
+
+        cmd_identity = message.content.split(" ")[0][len(self.setting.prefix):]
+        if cmd_identity not in self.commands:
+            log("client-msg", "コマンドが見つかりませんでした: 「{}」".format(cmd_identity))
+            await self.activity_channel.send("知らないコマンドが出てきました:thinking:")
+            return
+
+        await self.commands[cmd_identity].parse_command(
+            message.content[:len(self.setting.prefix) + len(cmd_identity)],
+            message
+        )
 
 
 
