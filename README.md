@@ -37,7 +37,7 @@ Dagger_TweetManagementSystem_Daggerが止まってしまったので開発して
 
 - [ ] `bot-base`: Botでツイートの可否を問うことができる。
   - [X] `client`: サーバーに挨拶をすることができる。
-  - [ ] `acquire-info`: ユーザーから**適切な**情報を取得することができる。
+  - [X] `acquire-info`: ユーザーから**適切な**情報を取得することができる。
   - [ ] `info-management`: ユーザーから得た情報を管理することができる。
   - [ ] `reaction`: リアクションを用いて可否を確認することができる。
   - [ ] `final-judge`: ツイートをするかどうかの最終判断ができる。
