@@ -31,7 +31,7 @@ class CreateTweetVoteCommand(ABCCommand, ABC):
             identify="create",
             args_format="(ツイートの内容)",
             name="ツイートを作成する",
-            description="ツイートしたい内容を"
+            description="ツイートしたい内容を登録し、投票を開始する"
         )
 
     async def parse_command(self, text: str, message: discord.Message):
