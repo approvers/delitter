@@ -6,7 +6,7 @@ from typing import Dict
 
 import discord
 
-from lib.discord import Client
+from lib.discord.Client import MainClient
 from lib.discord.command.ABCCommand import ABCCommand
 from lib.discord.command.CommandInfo import CommandInfo
 from lib.logging.Logger import log
@@ -16,9 +16,11 @@ from lib.types.TweetContent import TweetContent
 class CreateTweetVoteCommand(ABCCommand, ABC):
     SPECIAL_CHARACTER_REGEX: re.Pattern = re.compile("<[@#:].*?>")
 
-    def __init__(self, client: Client):
+    def __init__(self, client: MainClient):
         super().__init__(client)
         self.pending_tweets: Dict[int, TweetContent] = {}
+        self.suffrage_mention = \
+            client.get_guild(client.setting.guild_id).get_role(client.setting.suffrage_role_id).mention
         self.emoji = {
             "approve": client.get_emoji(client.setting.emoji_ids["approve"]),
             "deny": client.get_emoji(client.setting.emoji_ids["deny"])
@@ -58,8 +60,8 @@ class CreateTweetVoteCommand(ABCCommand, ABC):
         await sent_message.add_reaction(self.emoji["approve"])
         await sent_message.add_reaction(self.emoji["deny"])
 
-        # ステータスメッセージをクリアする
-        await sent_message.edit(content="", embed=new_embed)
+        # ステータスメッセージを設定する
+        await sent_message.edit(content="{}の皆さん、投票のお時間ですわよ！".format(self.suffrage_mention), embed=new_embed)
 
         # 保存してDone
         self.pending_tweets[sent_message.id] = tweet_content
