@@ -2,7 +2,6 @@ from abc import ABCMeta, abstractmethod
 
 import discord
 
-from lib.discord import Client
 from lib.discord.command.CommandInfo import CommandInfo
 
 
@@ -20,11 +19,10 @@ class ABCCommand(metaclass=ABCMeta):
         pass
 
     @abstractmethod
-    def parse_command(self, text: str, author: discord.User, client: Client):
+    def parse_command(self, text: str, message: discord.Message):
         """
         コマンドを実行する。
         :param text: 受信したメッセージからPrefixとコマンド識別文字列を除いた文字列。
-        :param author: メッセージを送信したユーザー。
-        :param client: このメッセージを受信したクライアント。
+        :param message: メッセージの情報。
         """
         pass
