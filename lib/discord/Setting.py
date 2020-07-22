@@ -46,8 +46,8 @@ class Setting:
         return Setting(
             raw_json["token"],
             raw_json["activity_channel_id"],
+            raw_json["prefix"],
             raw_json["guild_id"],
             raw_json["suffrage_role_id"],
-            raw_json["prefix"],
             raw_json["emoji_ids"]
         )
