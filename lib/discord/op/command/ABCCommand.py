@@ -3,7 +3,7 @@ from abc import ABCMeta, abstractmethod
 import discord
 
 from lib.discord.Setting import Setting
-from lib.discord.command.CommandInfo import CommandInfo
+from lib.discord.op.command.CommandInfo import CommandInfo
 
 
 class ABCCommand(metaclass=ABCMeta):
