@@ -2,7 +2,7 @@ from abc import ABCMeta, abstractmethod
 
 import discord
 
-from lib.discord import Client
+from lib.discord.Setting import Setting
 from lib.discord.command.CommandInfo import CommandInfo
 
 
@@ -12,11 +12,12 @@ class ABCCommand(metaclass=ABCMeta):
     """
 
     @abstractmethod
-    def __init__(self, client: Client):
+    def __init__(self, guild: discord.Guild, setting: Setting):
         """
         インスタンスを初期化する。
         初期化はBotのログイン直後に行われる。
-        :param client: ログイン直後のBot。
+        :param guild: Botが所属するギルド。
+        :param setting: Botの設定。
         """
         pass
 

@@ -31,6 +31,10 @@ class MainClient(discord.Client):
     def activity_channel(self):
         pass
 
+    @property
+    def activity_guild(self):
+        pass
+
     @setting.getter
     def setting(self) -> Setting:
         return self.__setting
@@ -38,6 +42,10 @@ class MainClient(discord.Client):
     @activity_channel.getter
     def activity_channel(self) -> discord.TextChannel:
         return self.__activity_channel
+
+    @activity_guild.getter
+    def activity_guild(self) -> discord.Guild:
+        return self.__activity_channel.guild
 
     def launch(self):
         """
@@ -60,7 +68,7 @@ class MainClient(discord.Client):
         log("client-login", "設定に問題はありませんでした。コマンドのインスタンスを生成します…")
 
         for command in self.__commands_type:
-            command_instance = command(self)
+            command_instance = command(self.activity_guild, self.setting)
             self.__commands[command_instance.get_command_info().identify] = command_instance
 
         log("client-login", "問題は発生しませんでした。起動メッセージを送信します…")

@@ -6,7 +6,7 @@ from math import ceil
 import discord
 
 from lib.data.PendingTweetsManager import PendingTweetsManager
-from lib.discord.Client import MainClient
+from lib.discord.Setting import Setting
 from lib.discord.command.ABCCommand import ABCCommand
 from lib.discord.command.CommandInfo import CommandInfo
 from lib.logging.Logger import log
@@ -16,15 +16,12 @@ from lib.types.TweetContent import TweetContent
 class CreateTweetVoteCommand(ABCCommand, ABC):
     SPECIAL_CHARACTER_REGEX: re.Pattern = re.compile("<[@#:].*?>")
 
-    def __init__(self, client: MainClient):
-        super().__init__(client)
+    def __init__(self, guild: discord.Guild, setting: Setting):
+        super().__init__(guild, setting)
         self.pending_tweets_manager = PendingTweetsManager()
-        self.suffrage_mention = \
-            client.get_guild(client.setting.guild_id).get_role(client.setting.suffrage_role_id).mention
-        self.emoji = {
-            "approve": client.get_emoji(client.setting.emoji_ids["approve"]),
-            "deny": client.get_emoji(client.setting.emoji_ids["deny"])
-        }
+        self.suffrage_mention = guild.get_role(setting.suffrage_role_id).mention
+        self.guild = guild
+        self.emoji_ids = setting.emoji_ids
 
     def get_command_info(self) -> CommandInfo:
         return CommandInfo(
@@ -57,8 +54,8 @@ class CreateTweetVoteCommand(ABCCommand, ABC):
         await sent_message.edit(content="リアクションを設定しています…", embed=new_embed)
 
         # リアクションを設定する
-        await sent_message.add_reaction(self.emoji["approve"])
-        await sent_message.add_reaction(self.emoji["deny"])
+        await sent_message.add_reaction(await self.guild.fetch_emoji(self.emoji_ids["approve"]))
+        await sent_message.add_reaction(await self.guild.fetch_emoji(self.emoji_ids["deny"]))
 
         # ステータスメッセージを設定する
         await sent_message.edit(content="{}の皆さん、投票のお時間ですわよ！".format(self.suffrage_mention), embed=new_embed)
