@@ -1,5 +1,6 @@
 import json
 import os
+from typing import Dict
 
 from typing.io import TextIO
 
@@ -9,7 +10,8 @@ class MainClientSetting:
     def __init__(self,
                  token: str,
                  activity_channel_id: int,
-                 prefix: str
+                 prefix: str,
+                 emoji_ids: Dict[str, int],
                  ):
         """
         MainClientクラスで使用する設定を保持するクラス。
@@ -25,6 +27,7 @@ class MainClientSetting:
         self.token = os.environ["DISCORD_TOKEN"] if token is None else token
         self.activity_channel_id = activity_channel_id
         self.prefix = prefix
+        self.emoji_ids = emoji_ids
 
     @classmethod
     def load_from_json(cls, file: TextIO):
@@ -40,4 +43,5 @@ class MainClientSetting:
             raw_json["token"],
             raw_json["activity_channel_id"],
             raw_json["prefix"],
+            raw_json["emoji_ids"]
         )
