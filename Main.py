@@ -6,5 +6,5 @@ if __name__ == '__main__':
         setting: MainClientSetting = MainClientSetting.load_from_json(f)
 
     client = MainClient(setting)
-    client.add_command(CreateTweetVoteCommand())
+    client.add_command(CreateTweetVoteCommand)
     client.launch()

@@ -1,4 +1,4 @@
-from typing import Dict
+from typing import Dict, Type, List
 
 import discord
 
@@ -20,6 +20,7 @@ class MainClient(discord.Client):
         super(MainClient, self).__init__()
         self.setting: MainClientSetting = setting
         self.activity_channel: discord.TextChannel = None
+        self.commands_type: List[Type[ABCCommand]] = []
         self.commands: Dict[str, ABCCommand] = {}
 
     def launch(self):
@@ -30,8 +31,8 @@ class MainClient(discord.Client):
         log("client-login", "ログイン処理を開始します。")
         self.run(self.setting.token)
 
-    def add_command(self, command: ABCCommand):
-        self.commands[command.get_command_info().identify] = command
+    def add_command(self, command: Type[ABCCommand]):
+        self.commands_type.append(command)
 
     async def on_ready(self):
         log("client-login", "ログインに成功しました。適切な設定が行われているか確認しています。")
@@ -40,7 +41,13 @@ class MainClient(discord.Client):
         if self.activity_channel is None:
             raise RuntimeError("Activity channel is not found! Check your \"activity_channel_id\" value.")
 
-        log("client-login", "設定に問題はありませんでした。起動メッセージを送信します…")
+        log("client-login", "設定に問題はありませんでした。コマンドのインスタンスを生成します…")
+
+        for command in self.commands_type:
+            command_instance = command(self)
+            self.commands[command_instance.get_command_info().identify] = command_instance
+
+        log("client-login", "問題は発生しませんでした。起動メッセージを送信します…")
         await self.activity_channel.send("***†Delitter Ready†***")
 
     async def on_message(self, message: discord.Message):
