@@ -4,7 +4,7 @@ import random
 import discord
 
 
-class TweetContent:
+class TweetVote:
 
     def __init__(self,
                  content: str,

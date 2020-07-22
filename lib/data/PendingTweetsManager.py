@@ -1,6 +1,6 @@
 from typing import Dict
 
-from lib.types.TweetContent import TweetContent
+from lib.data.TweetVote import TweetVote
 
 
 class PendingTweetsManager:
@@ -12,9 +12,9 @@ class PendingTweetsManager:
 
     def __init__(self):
         if not hasattr(self, "pending_tweets"):
-            self.pending_tweets: Dict[int, TweetContent] = {}
+            self.pending_tweets: Dict[int, TweetVote] = {}
 
-    def add(self, tweet_id: int, content: TweetContent):
+    def add(self, tweet_id: int, content: TweetVote):
         self.pending_tweets[tweet_id] = content
 
     def get(self, tweet_id: int):

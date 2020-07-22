@@ -6,11 +6,11 @@ from math import ceil
 import discord
 
 from lib.data.PendingTweetsManager import PendingTweetsManager
+from lib.data.TweetVote import TweetVote
 from lib.discord.Setting import Setting
 from lib.discord.op.command.ABCCommand import ABCCommand
 from lib.discord.op.command.CommandInfo import CommandInfo
 from lib.logging.Logger import log
-from lib.types.TweetContent import TweetContent
 
 
 class CreateTweetVoteCommand(ABCCommand, ABC):
@@ -41,7 +41,7 @@ class CreateTweetVoteCommand(ABCCommand, ABC):
             return
 
         # ツイート内容のデータを生成する
-        tweet_content = TweetContent(text, message.author)
+        tweet_content = TweetVote(text, message.author)
 
         # 投票用のEmbedを作成する
         embed = tweet_content.to_embed()
