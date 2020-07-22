@@ -19,4 +19,4 @@ class CreateTweetVoteCommand(ABCCommand, ABC):
 
     async def parse_command(self, text: str, message: discord.Message):
         log("command-create", "ツイートの作成コマンドを受信しました。")
-        await message.channel.send("`NotImplementedException`")
+        await message.channel.send("`{}`".format(text))

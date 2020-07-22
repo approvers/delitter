@@ -54,14 +54,15 @@ class MainClient(discord.Client):
 
         log("client-msg", "処理対象のメッセージを受信しました:\n{}".format(message.content))
 
-        cmd_identity = message.content.split(" ")[0][len(self.setting.prefix):]
+        cmd_header = message.content.split(" ")[0]
+        cmd_identity = cmd_header[len(self.setting.prefix):]
         if cmd_identity not in self.commands:
             log("client-msg", "コマンドが見つかりませんでした: 「{}」".format(cmd_identity))
             await self.activity_channel.send("知らないコマンドが出てきました:thinking:")
             return
 
         await self.commands[cmd_identity].parse_command(
-            message.content[:len(self.setting.prefix) + len(cmd_identity)],
+            message.content[len(cmd_header) + 1:],
             message
         )
 
