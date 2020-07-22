@@ -1,3 +1,7 @@
+from lib.discord.Client import *
+
 if __name__ == '__main__':
-    print("Hello world!")
-    print("This repository is still under construction. Please visit here again later!")
+    with open("./settings/settings.json", mode="r") as f:
+        setting: MainClientSetting = MainClientSetting.load_from_json(f)
+
+    MainClient(setting).launch()
