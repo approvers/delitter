@@ -106,6 +106,11 @@ class MainClient(discord.Client):
     async def on_reaction_add(self, reaction: discord.Reaction, user: discord.Member):
         await ReactionEvent.on_reaction_add(reaction, user, self.setting)
 
+    async def on_reaction_remove(self, reaction: discord.Reaction, user: discord.Member):
+        await ReactionEvent.on_reaction_remove(reaction, user, self.setting)
+
+    async def on_reaction_clear(self, message: discord.Message, reactions: List[discord.Reaction]):
+        await ReactionEvent.on_reaction_clear(message)
 
     def get_help_message(self):
         help_message = "***†Delitter†***\nツイートを審議するためのBotです。"
