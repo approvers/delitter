@@ -104,7 +104,9 @@ class MainClient(discord.Client):
         )
 
     async def on_reaction_add(self, reaction: discord.Reaction, user: discord.Member):
-        await ReactionEvent.on_reaction_add(reaction, user, self.setting)
+        approved = await ReactionEvent.on_reaction_add(reaction, user, self.setting)
+        if approved:
+            log("react-add", "可決を確認しました。")
 
     async def on_reaction_remove(self, reaction: discord.Reaction, user: discord.Member):
         await ReactionEvent.on_reaction_remove(reaction, user, self.setting)
