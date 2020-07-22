@@ -7,10 +7,10 @@ import discord
 
 from lib.data.PendingTweetsManager import PendingTweetsManager
 from lib.data.TweetVote import TweetVote
-from lib.discord.Setting import Setting
 from lib.discord.op.command.ABCCommand import ABCCommand
 from lib.discord.op.command.CommandInfo import CommandInfo
 from lib.logging.Logger import log
+from lib.settings.Setting import Setting
 
 
 class CreateTweetVoteCommand(ABCCommand, ABC):
