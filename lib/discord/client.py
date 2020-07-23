@@ -94,6 +94,10 @@ class MainClient(discord.Client):
         :param reaction: リアクションが追加された対象のメッセージの、現在のリアクションの状態
         :param user: 誰「が」リアクションを追加したか (who)
         """
+
+        if reaction.message.channel.id != self.setting.activity_channel_id:
+            return
+
         approved = await self.reaction_event_handler.on_reaction_add(reaction, user)
         if approved:
             await approve_event.on_approved(reaction.message, self.vote_record)
@@ -105,6 +109,9 @@ class MainClient(discord.Client):
         :param reaction: リアクションが削除された対象のメッセージの、現在のリアクションの状態
         :param user: 誰「の」リアクションが削除されたか (whose)
         """
+        if reaction.message.channel.id != self.setting.activity_channel_id:
+            return
+
         await self.reaction_event_handler.on_reaction_remove(reaction, user)
 
     async def on_reaction_clear(self, message: discord.Message, reactions: List[discord.Reaction]):
@@ -114,4 +121,7 @@ class MainClient(discord.Client):
         :param reactions: 削除されたリアクションの情報。
         :return:
         """
+        if message.channel.id != self.setting.activity_channel_id:
+            return
+
         await self.reaction_event_handler.on_reaction_clear(message)
