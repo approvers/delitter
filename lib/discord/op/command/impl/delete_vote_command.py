@@ -44,6 +44,11 @@ class DeleteVoteCommand(ABCCommand, ABC):
             await message.channel.send("残念、IDが間違っています")
             return
 
+        # 投票が削除しようとしている人によって作成されたものかどうかを確認する
+        if TweetsVoteRecord().get(tweet_id).author.id != message.author.id:
+            await message.channel.send("人の投票消さないで♥")
+            return
+
         # 該当する投票を削除する
         TweetsVoteRecord().delete(tweet_id)
         await (await message.channel.fetch_message(tweet_id)).delete()
