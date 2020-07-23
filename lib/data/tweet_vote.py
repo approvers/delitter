@@ -41,7 +41,7 @@ class TweetVote:
 
         return math.floor(self.approves / (self.approves + self.denys) * 100)
 
-    def approved(self, judge_standard: JudgeStandard) -> bool:
+    def is_approved(self, judge_standard: JudgeStandard) -> bool:
         """
         可決状態にあるかを確認する。
         :param judge_standard: 可決の基準。
