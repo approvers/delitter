@@ -8,6 +8,8 @@ import random
 
 import discord
 
+from lib.settings.judge_standard import JudgeStandard
+
 
 class TweetVote:
     """
@@ -39,17 +41,16 @@ class TweetVote:
 
         return math.floor(self.approves / (self.approves + self.denys) * 100)
 
-    def approved(self, required_total: int, required_rate: int):
+    def approved(self, judge_standard: JudgeStandard):
         """
         可決状態にあるかを確認する。
-        :param required_total: 可決されるために必要な総票数。
-        :param required_rate: 可決されるために必要な可決率。
-        :return:
+        :param judge_standard: 可決の基準。
+        :return: 可決されたどうか。可決された場合はTrueを返す。
         """
-        if (self.approves + self.denys) < required_total:
+        if (self.approves + self.denys) < judge_standard.required_total:
             return False
 
-        return self.get_approval_rate() >= required_rate
+        return self.get_approval_rate() >= judge_standard.required_rate
 
     def to_embed(self) -> discord.Embed:
         """
