@@ -25,6 +25,8 @@ class TweetsVoteRecord:
         :param content: 投票。
         """
         with self.thread_lock:
+            if tweet_id in self.pending_tweets_list:
+                raise RuntimeError("投票IDが重複しました。もう一度登録してください。")
             self.pending_tweets_list[tweet_id] = content
 
     def get(self, tweet_id: int) -> Optional[TweetVote]:
