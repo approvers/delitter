@@ -29,16 +29,27 @@ class TweetVote:
         self.denys = 0
 
     def get_approval_rate(self):
+        """
+        投票の可決率を計算する。
+        総票数がゼロの場合は0とする。
+        :return: 投票の可決率。
+        """
         if (self.approves + self.denys) == 0:
             return 0
         else:
             return math.floor(self.approves / (self.approves + self.denys) * 100)
 
     def approved(self, required_total: int, required_rate: int):
+        """
+        可決状態にあるかを確認する。
+        :param required_total: 可決されるために必要な総票数。
+        :param required_rate: 可決されるために必要な可決率。
+        :return:
+        """
         if (self.approves + self.denys) < required_total:
             return False
 
-        return (self.approves / (self.approves + self.denys)) >= required_rate
+        return self.get_approval_rate() >= required_rate
 
     def to_embed(self) -> discord.Embed:
         """
@@ -46,7 +57,7 @@ class TweetVote:
         :return: Embed。
         """
 
-        # 可決率を計算する。母数が0の場合は0%とする。
+        # 可決率を計算する。
         approve_rate = self.get_approval_rate()
 
         # embedを組み立てる
