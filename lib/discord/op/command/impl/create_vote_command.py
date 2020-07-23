@@ -58,7 +58,7 @@ class CreateVoteCommand(ABCCommand, ABC):
 
         # 送信して得たIDをEmbedに埋め込む(編集)
         new_embed = sent_message.embeds[0]
-        new_embed.set_footer(text="ID: {}".format(sent_message.id))
+        new_embed.set_footer(text="ID: †{}†".format(sent_message.id))
         await sent_message.edit(content="リアクションを設定しています…", embed=new_embed)
 
         # リアクションを設定する

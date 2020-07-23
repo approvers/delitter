@@ -55,5 +55,5 @@ class DeleteVoteCommand(ABCCommand, ABC):
         self.vote_record.delete(tweet_id)
         await (await message.channel.fetch_message(tweet_id)).delete()
 
-        await message.channel.send("ID`{}` の投票を削除しました。".format(tweet_id))
+        await message.channel.send("ID †`{}`† の投票を削除しました。".format(tweet_id))
 

@@ -48,7 +48,7 @@ class ReactionEvent:
 
         # 更新した情報をEmbedに反映する
         embed = tweet_vote.to_embed()
-        embed.set_footer(text="ID: {}".format(reaction.message.id))
+        embed.set_footer(text="ID: †{}†".format(reaction.message.id))
         await reaction.message.edit(embed=embed)
 
         return tweet_vote.approved(self.setting.judge_standard)
@@ -85,7 +85,7 @@ class ReactionEvent:
 
         # Embedに反映する
         embed = tweet_vote.to_embed()
-        embed.set_footer(text="ID: {}".format(reaction.message.id))
+        embed.set_footer(text="ID: †{}†".format(reaction.message.id))
         await reaction.message.edit(embed=embed)
 
     async def on_reaction_clear(self, message: discord.Message):
