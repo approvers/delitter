@@ -3,7 +3,6 @@ create_vote_command.py
 ------------------------
 投票を作成するためのコマンドが入っている。
 """
-import functools
 import re
 import unicodedata
 from abc import ABC
@@ -116,4 +115,4 @@ def get_apparently_length(text: str) -> int:
     :param text: 文字列。
     :return: 見かけ上の長さ。
     """
-    return functools.reduce(lambda l, r: 1 + char_apparently_length(r), text, 0)
+    return sum(map(char_apparently_length, text))

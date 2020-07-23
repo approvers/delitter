@@ -40,13 +40,14 @@ class DeleteVoteCommand(ABCCommand, ABC):
             await message.channel.send("なんだお前IDは数値で入力してクレメンス")
             return
 
+        record = self.vote_record.get(tweet_id)
         # 該当する投票があるか
-        if self.vote_record.get(tweet_id) is None:
+        if record is None:
             await message.channel.send("残念、IDが間違っています")
             return
 
         # 投票が削除しようとしている人によって作成されたものかどうかを確認する
-        if self.vote_record.get(tweet_id).author.id != message.author.id:
+        if record.author.id != message.author.id:
             await message.channel.send("人の投票消さないで♥")
             return
 
