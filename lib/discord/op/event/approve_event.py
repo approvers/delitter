@@ -1,7 +1,7 @@
 import discord
 
-from lib.data.TweetsVoteRecord import TweetsVoteRecord
-from lib.logging.Logger import log
+from lib.data.tweet_votes_record import TweetsVoteRecord
+from lib.logging.logger import log
 
 
 async def on_approved(message: discord.Message):

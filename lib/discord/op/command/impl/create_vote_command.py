@@ -5,12 +5,12 @@ from math import ceil
 
 import discord
 
-from lib.data.TweetVote import TweetVote
-from lib.data.TweetsVoteRecord import TweetsVoteRecord
-from lib.discord.op.command.ABCCommand import ABCCommand
-from lib.discord.op.command.CommandProperty import CommandProperty
-from lib.logging.Logger import log
-from lib.settings.Setting import Setting
+from lib.data.tweet_vote import TweetVote
+from lib.data.tweet_votes_record import TweetsVoteRecord
+from lib.discord.op.command.abc_command import ABCCommand
+from lib.discord.op.command.command_property import CommandProperty
+from lib.logging.logger import log
+from lib.settings.setting import Setting
 
 
 class CreateTweetVoteCommand(ABCCommand, ABC):

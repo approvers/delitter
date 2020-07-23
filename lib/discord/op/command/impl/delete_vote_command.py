@@ -2,10 +2,10 @@ from abc import ABC
 
 import discord
 
-from lib.data.TweetsVoteRecord import TweetsVoteRecord
-from lib.discord.op.command.ABCCommand import ABCCommand
-from lib.discord.op.command.CommandProperty import CommandProperty
-from lib.settings.Setting import Setting
+from lib.data.tweet_votes_record import TweetsVoteRecord
+from lib.discord.op.command.abc_command import ABCCommand
+from lib.discord.op.command.command_property import CommandProperty
+from lib.settings.setting import Setting
 
 
 class DeleteTweetVoteCommand(ABCCommand, ABC):

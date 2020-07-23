@@ -2,10 +2,10 @@ from typing import Dict, Type, List
 
 import discord
 
-from lib.discord.op.command.ABCCommand import ABCCommand
-from lib.discord.op.event import ReactionEvent, ApproveEvent
-from lib.logging.Logger import log
-from lib.settings.Setting import Setting
+from lib.discord.op.command.abc_command import ABCCommand
+from lib.discord.op.event import reaction_event, approve_event
+from lib.logging.logger import log
+from lib.settings.setting import Setting
 
 
 class MainClient(discord.Client):
@@ -106,9 +106,9 @@ class MainClient(discord.Client):
         :param reaction: リアクションが追加された対象のメッセージの、現在のリアクションの状態
         :param user: 誰「が」リアクションを追加したか (who)
         """
-        approved = await ReactionEvent.on_reaction_add(reaction, user, self.setting)
+        approved = await reaction_event.on_reaction_add(reaction, user, self.setting)
         if approved:
-            await ApproveEvent.on_approved(reaction.message)
+            await approve_event.on_approved(reaction.message)
             # TODO: ツイートする
 
     async def on_reaction_remove(self, reaction: discord.Reaction, user: discord.Member):
@@ -117,7 +117,7 @@ class MainClient(discord.Client):
         :param reaction: リアクションが削除された対象のメッセージの、現在のリアクションの状態
         :param user: 誰「の」リアクションが削除されたか (whose)
         """
-        await ReactionEvent.on_reaction_remove(reaction, user, self.setting)
+        await reaction_event.on_reaction_remove(reaction, user, self.setting)
 
     async def on_reaction_clear(self, message: discord.Message, reactions: List[discord.Reaction]):
         """
@@ -126,7 +126,7 @@ class MainClient(discord.Client):
         :param reactions: 削除されたリアクションの情報。
         :return:
         """
-        await ReactionEvent.on_reaction_clear(message)
+        await reaction_event.on_reaction_clear(message)
 
     def get_help_message(self):
         """

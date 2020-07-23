@@ -1,8 +1,8 @@
 import discord
 
-from lib.data.TweetsVoteRecord import TweetsVoteRecord
-from lib.logging.Logger import log
-from lib.settings.Setting import Setting
+from lib.data.tweet_votes_record import TweetsVoteRecord
+from lib.logging.logger import log
+from lib.settings.setting import Setting
 
 
 async def on_reaction_add(reaction: discord.Reaction, user: discord.Member, setting: Setting) -> bool:

@@ -1,6 +1,6 @@
 from typing import Dict
 
-from lib.data.TweetVote import TweetVote
+from lib.data.tweet_vote import TweetVote
 
 
 class TweetsVoteRecord:
