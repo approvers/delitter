@@ -6,16 +6,8 @@ class JudgeStandard:
 
     @property
     def required_total(self):
-        pass
+        return self.__required_total
 
     @property
     def required_rate(self):
-        pass
-
-    @required_total.getter
-    def required_total(self) -> int:
-        return self.__required_total
-
-    @required_rate.getter
-    def required_rate(self) -> int:
         return self.__required_rate
