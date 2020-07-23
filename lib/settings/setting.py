@@ -8,7 +8,10 @@ import json
 import os
 from typing import Dict
 
+from jsonschema import validate
 from typing.io import TextIO
+
+from lib.data.judge_standard import JudgeStandard
 
 
 class Setting:
@@ -16,15 +19,15 @@ class Setting:
     Botの設定。
     """
 
-    def __init__(self,
-                 token: str,
-                 activity_channel_id: int,
-                 prefix: str,
-                 suffrage_role_id: int,
-                 emoji_ids: Dict[str, int],
-                 approve_total: int,
-                 approve_rate: int
-                 ):
+    def __init__(
+            self,
+            token: str,
+            activity_channel_id: int,
+            prefix: str,
+            suffrage_role_id: int,
+            emoji_ids: Dict[str, int],
+            judge_standard: JudgeStandard,
+    ):
         """
         MainClientクラスで使用する設定を保持するクラス。
         :param token: ログインに使用するトークン。
@@ -33,8 +36,7 @@ class Setting:
         :param prefix: Botのプレフィックス。
         :param suffrage_role_id: 参政権ロールのID。
         :param emoji_ids: 投票に使用する絵文字のID。
-        :param approve_total: 決議に必要な人数。
-        :param approve_rate: 可決となるための可決率。
+        :param judge_standard: 可決となるための基準。
         """
 
         if token is None and "DISCORD_TOKEN" not in os.environ:
@@ -45,25 +47,32 @@ class Setting:
         self.prefix = prefix
         self.suffrage_role_id = suffrage_role_id
         self.emoji_ids = emoji_ids
-        self.approve_total = approve_total
-        self.approve_rate = approve_rate
+        self.judge_standard = judge_standard
 
-    @classmethod
-    def load_from_json(cls, file: TextIO):
-        """
-        Jsonファイルから設定をパースしてMainClientSettingを生成する
-        :param file: Jsonファイルを参照しているIO。
-        :return: 生成されたMainClientSetting
-        """
-        raw_json: dict = json.load(file)
-        raw_json.setdefault("token", None)
 
-        return Setting(
-            raw_json["token"],
-            raw_json["activity_channel_id"],
-            raw_json["prefix"],
-            raw_json["suffrage_role_id"],
-            raw_json["emoji_ids"],
+def create_setting_from_json(file: TextIO) -> Setting:
+    """
+    Jsonファイルから設定をパースしてSettingを生成する
+    :param file: Jsonファイルを参照しているIO。
+    :return: 生成されたSetting
+    """
+
+    with open("lib/settings/settings_scheme.json", mode="r") as f:
+        scheme_json: dict = json.load(f)
+
+    raw_json: dict = json.load(file)
+    validate(raw_json, scheme_json)
+
+    raw_json.setdefault("token", None)
+
+    return Setting(
+        raw_json["token"],
+        raw_json["activity_channel_id"],
+        raw_json["prefix"],
+        raw_json["suffrage_role_id"],
+        raw_json["emoji_ids"],
+        JudgeStandard(
             raw_json["judge_standard"]["total"],
             raw_json["judge_standard"]["rate"]
         )
+    )

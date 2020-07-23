@@ -1,0 +1,51 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Delitter Bot Setting Json Scheme",
+  "description": "Delitterの設定が如何にして行われるべきかを説明するスキーマです。",
+  "type": "object",
+  "additionalProperties": false,
+
+  "required": [
+    "activity_channel_id",
+    "emoji_ids",
+    "prefix",
+    "suffrage_role_id",
+    "judge_standard"
+  ],
+
+  "properties": {
+    "activity_channel_id": {
+      "type": "integer"
+    },
+    "token": {
+      "type": "string"
+    },
+    "prefix": {
+      "type": "string"
+    },
+    "emoji_ids": {
+      "properties": {
+        "approve": {
+          "type": "integer"
+        },
+        "deny": {
+          "type": "integer"
+        }
+      }
+    },
+    "suffrage_role_id": {
+      "type": "integer"
+    },
+    "judge_standard": {
+      "properties": {
+        "total": {
+          "type": "integer"
+        },
+        "rate": {
+          "type": "integer"
+        }
+      }
+    }
+  }
+
+}

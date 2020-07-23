@@ -12,23 +12,25 @@ import discord
 
 from lib.data.tweet_vote import TweetVote
 from lib.data.tweet_votes_record import TweetsVoteRecord
-from lib.discord.op.command.abc_command import ABCCommand
+from lib.discord.op.command.abst_command_base import AbstCommandBase
 from lib.discord.op.command.command_property import CommandProperty
+from lib.discord.tweet_vote_utils import create_tweet_vote_embed
 from lib.logging.logger import log
 from lib.settings.setting import Setting
 
 
-class CreateVoteCommand(ABCCommand, ABC):
+class CreateVoteCommand(AbstCommandBase, ABC):
     """
     ツイートを作成するコマンド。
     """
     SPECIAL_CHARACTER_REGEX: re.Pattern = re.compile("<[@#:].*?>")
 
-    def __init__(self, guild: discord.Guild, setting: Setting):
-        super().__init__(guild, setting)
+    def __init__(self, guild: discord.Guild, setting: Setting, vote_record: TweetsVoteRecord):
+        super().__init__(guild, setting, vote_record)
         self.suffrage_mention = guild.get_role(setting.suffrage_role_id).mention
         self.guild = guild
         self.emoji_ids = setting.emoji_ids
+        self.vote_record = vote_record
 
     def get_command_info(self) -> CommandProperty:
         return CommandProperty(
@@ -38,7 +40,7 @@ class CreateVoteCommand(ABCCommand, ABC):
             description="ツイートしたい内容を登録し、投票を開始する"
         )
 
-    async def parse_command(self, text: str, message: discord.Message):
+    async def execute_command(self, text: str, message: discord.Message):
         log("command-create", "ツイートの作成コマンドを受信しました。")
 
         # ツイート内容に問題がないか確認する
@@ -51,13 +53,13 @@ class CreateVoteCommand(ABCCommand, ABC):
         tweet_content = TweetVote(text, message.author)
 
         # 投票用のEmbedを作成する
-        embed = tweet_content.to_embed()
+        embed = create_tweet_vote_embed(tweet_content)
         embed.set_footer(text="†ACQUIRING ID IN PROGRESS†")
         sent_message: discord.Message = await message.channel.send("IDを取得しています…", embed=embed)
 
         # 送信して得たIDをEmbedに埋め込む(編集)
         new_embed = sent_message.embeds[0]
-        new_embed.set_footer(text="ID: {}".format(sent_message.id))
+        new_embed.set_footer(text="ID: †{}†".format(sent_message.id))
         await sent_message.edit(content="リアクションを設定しています…", embed=new_embed)
 
         # リアクションを設定する
@@ -68,11 +70,11 @@ class CreateVoteCommand(ABCCommand, ABC):
         await sent_message.edit(content="{}の皆さん、投票のお時間ですわよ！".format(self.suffrage_mention), embed=new_embed)
 
         # 保存してDone
-        TweetsVoteRecord().add(sent_message.id, tweet_content)
+        self.vote_record.add(sent_message.id, tweet_content)
         log("command-create", "以下のコンテンツを登録しました:\nID: {}\n{}".format(sent_message.id, tweet_content))
 
 
-def validate_tweet(text) -> str:
+def validate_tweet(text: str) -> str:
     """
     ツイート内容に問題がないか確認する
     :param text: 確認するツイート内容。
@@ -98,15 +100,20 @@ def validate_tweet(text) -> str:
     return ""
 
 
+def char_apparently_length(char: str) -> int:
+    """
+    文字単体の見かけ上の長さを所得する。
+    :param char: 文字。
+    :return: 文字の見かけ上の長さ。
+    """
+    width_text = unicodedata.east_asian_width(char)
+    return 2 if width_text in ["F", "W", "A"] else 1
+
+
 def get_apparently_length(text: str) -> int:
     """
     文字列の見かけ上の長さを取得する。
     :param text: 文字列。
     :return: 見かけ上の長さ。
     """
-    length = 0
-    for c in text:
-        width_text = unicodedata.east_asian_width(c)
-        length += 2 if width_text in ["F", "W", "A"] else 1
-
-    return length
+    return sum(map(char_apparently_length, text))
