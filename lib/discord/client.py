@@ -86,7 +86,7 @@ class MainClient(discord.Client):
         log("client-msg", "処理対象のメッセージを受信しました:\n{}".format(message.content))
 
         # コマンドをパースする
-        await self.command_register.parse_command(message)
+        await self.command_register.execute_command(message)
 
     async def on_reaction_add(self, reaction: discord.Reaction, user: discord.Member):
         """

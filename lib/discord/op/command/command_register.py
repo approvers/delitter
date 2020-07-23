@@ -40,9 +40,9 @@ class CommandRegister:
             command_instance = command(guild, self.setting, vote_record)
             self.commands[command_instance.get_command_info().identify] = command_instance
 
-    async def parse_command(self, msg: discord.Message):
+    async def execute_command(self, msg: discord.Message):
         """
-        コマンドをパースする。
+        メッセージを基にコマンドを実行する。
         :param msg: コマンドを実行するために発行されたメッセージ。
         """
         cmd_header = msg.content.split(" ")[0]
