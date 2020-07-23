@@ -135,8 +135,7 @@ class MainClient(discord.Client):
         """
         help_message = "***†Delitter†***\nツイートを審議するためのBotです。"
         for cmd in self.commands.values():
-            info = cmd.get_command_info()
-            help_message += "```{}{} {}\n  {}```".format(self.setting.prefix, info.identify, info.name, info.description)
+            help_message += str(cmd)
         return help_message
 
 

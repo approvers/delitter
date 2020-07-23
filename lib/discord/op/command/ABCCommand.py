@@ -37,3 +37,11 @@ class ABCCommand(metaclass=ABCMeta):
         :param message: メッセージの情報。
         """
         pass
+
+    def __str__(self):
+        """
+        文字列で自己表現する。
+        :return: 自己表現の結果。
+        """
+        prop = self.get_command_info()
+        return "```{} {}\n  {}```".format(prop.identify, prop.name, prop.description)
