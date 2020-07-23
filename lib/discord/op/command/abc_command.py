@@ -32,7 +32,7 @@ class ABCCommand(metaclass=ABCMeta):
     def get_command_info(self) -> CommandProperty:
         """
         コマンドの情報を取得する。
-        :return: コマンドの情報が代入されたCommandInfo
+        :return: コマンドの情報が代入されたCommandProperty
         """
         pass
 
