@@ -42,7 +42,9 @@ async def on_reaction_add(reaction: discord.Reaction, user: discord.Member, sett
         tweet_vote.denys += 1
 
     # 更新した情報をEmbedに反映する
-    await reaction.message.edit(embed=tweet_vote.to_embed())
+    embed = tweet_vote.to_embed()
+    embed.set_footer(text="ID: {}".format(reaction.message.id))
+    await reaction.message.edit(embed=embed)
 
     # 可決状態になったかを返す
     return (
@@ -79,7 +81,9 @@ async def on_reaction_remove(reaction: discord.Reaction, user: discord.Member, s
         tweet_vote.denys -= 1
 
     # Embedに反映する
-    await reaction.message.edit(embed=tweet_vote.to_embed())
+    embed = tweet_vote.to_embed()
+    embed.set_footer(text="ID: {}".format(reaction.message.id))
+    await reaction.message.edit(embed=embed)
 
 
 async def on_reaction_clear(message: discord.Message):
