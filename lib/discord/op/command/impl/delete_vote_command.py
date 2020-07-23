@@ -13,7 +13,7 @@ from lib.discord.op.command.command_property import CommandProperty
 from lib.settings.setting import Setting
 
 
-class DeleteTweetVoteCommand(ABCCommand, ABC):
+class DeleteVoteCommand(ABCCommand, ABC):
     """
     投票を削除するためのコマンド。
     """

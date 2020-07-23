@@ -18,7 +18,7 @@ from lib.logging.logger import log
 from lib.settings.setting import Setting
 
 
-class CreateTweetVoteCommand(ABCCommand, ABC):
+class CreateVoteCommand(ABCCommand, ABC):
     """
     ツイートを作成するコマンド。
     """
@@ -90,7 +90,7 @@ def validate_tweet(text) -> str:
         return "文字列が極端に短いみたいです:thinking:\n" \
                "1文字(英数字の場合は2文字です)も入ってないみたいです。"
 
-    if CreateTweetVoteCommand.SPECIAL_CHARACTER_REGEX.match(text) is not None:
+    if CreateVoteCommand.SPECIAL_CHARACTER_REGEX.match(text) is not None:
         log("command-create", "特殊な文字列が含まれています。")
         return "特殊な文字列が含まれています:thinking:\n" \
                "メンションやこの鯖独自の絵文字(<:ahe:724540322322972723>とか)はツイートできません。使えたら面白いんだけどな〜"
