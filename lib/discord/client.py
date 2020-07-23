@@ -80,11 +80,9 @@ class MainClient(discord.Client):
 
         # 処理対象のメッセージかを確認する
         if message.author.bot or message.channel.id != self.setting.activity_channel_id:
-            log("client-msg", "メッセージはBotからのものか、Activity Channelではないところで発言されたものでした。無視します！")
             return
 
         if not message.content.startswith(self.setting.prefix):
-            log("client-msg", "メッセージは処理対象でしたが、Prefix「{}」がありませんでした。無視します！".format(self.setting.prefix))
             return
 
         log("client-msg", "処理対象のメッセージを受信しました:\n{}".format(message.content))
