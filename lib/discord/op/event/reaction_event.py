@@ -69,6 +69,10 @@ async def on_reaction_remove(reaction: discord.Reaction, user: discord.Member, s
             "***†卍 メス堕ち女装土下座生配信 卍†***奉れ！！！！！！！！！！！！！！！！よ！！！！！！！！！！！！！！！！！！！")
         return
 
+    # 関係ないメッセージのリアクションが削除された
+    if TweetsVoteRecord.get(reaction.message.id) is None:
+        return
+
     log("react-del", "{}がしたリアクションが削除されました。".format(user.name))
 
     # TweetsVoteRecordから該当するTweetVoteを持ってくる
