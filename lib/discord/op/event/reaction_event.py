@@ -66,7 +66,7 @@ async def on_reaction_remove(reaction: discord.Reaction, user: discord.Member, s
         # お気持ち表明して帰る
         await reaction.message.channel.send(
             "お前！！！！！！！！！！！！！！！！なんてことしてくれたんだ！！！！！！！！！！！！！！！！！！！！！！\n"
-            "***†卍 メス堕ち女装土下座生配信 卍†***奉れ！！！！！！！！！！！！！！！！よ！！！！！！！！！！！！！！！！！！１")
+            "***†卍 メス堕ち女装土下座生配信 卍†***奉れ！！！！！！！！！！！！！！！！よ！！！！！！！！！！！！！！！！！！！")
         return
 
     log("react-del", "{}がしたリアクションが削除されました。".format(user.name))
