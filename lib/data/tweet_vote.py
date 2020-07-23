@@ -36,8 +36,8 @@ class TweetVote:
         """
         if (self.approves + self.denys) == 0:
             return 0
-        else:
-            return math.floor(self.approves / (self.approves + self.denys) * 100)
+
+        return math.floor(self.approves / (self.approves + self.denys) * 100)
 
     def approved(self, required_total: int, required_rate: int):
         """
