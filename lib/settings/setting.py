@@ -48,30 +48,30 @@ class Setting:
         self.emoji_ids = emoji_ids
         self.judge_standard = judge_standard
 
-    @classmethod
-    def load_from_json(cls, file: TextIO):
-        """
-        Jsonファイルから設定をパースしてMainClientSettingを生成する
-        :param file: Jsonファイルを参照しているIO。
-        :return: 生成されたMainClientSetting
-        """
 
-        with open("lib/settings/settings_scheme.json", mode="r") as f:
-            scheme_json: dict = json.load(f)
+def create_setting_from_json(file: TextIO) -> Setting:
+    """
+    Jsonファイルから設定をパースしてMainClientSettingを生成する
+    :param file: Jsonファイルを参照しているIO。
+    :return: 生成されたSetting
+    """
 
-        raw_json: dict = json.load(file)
-        validate(raw_json, scheme_json)
+    with open("lib/settings/settings_scheme.json", mode="r") as f:
+        scheme_json: dict = json.load(f)
 
-        raw_json.setdefault("token", None)
+    raw_json: dict = json.load(file)
+    validate(raw_json, scheme_json)
 
-        return Setting(
-            raw_json["token"],
-            raw_json["activity_channel_id"],
-            raw_json["prefix"],
-            raw_json["suffrage_role_id"],
-            raw_json["emoji_ids"],
-            JudgeStandard(
-                raw_json["judge_standard"]["total"],
-                raw_json["judge_standard"]["rate"]
-            )
+    raw_json.setdefault("token", None)
+
+    return Setting(
+        raw_json["token"],
+        raw_json["activity_channel_id"],
+        raw_json["prefix"],
+        raw_json["suffrage_role_id"],
+        raw_json["emoji_ids"],
+        JudgeStandard(
+            raw_json["judge_standard"]["total"],
+            raw_json["judge_standard"]["rate"]
         )
+    )

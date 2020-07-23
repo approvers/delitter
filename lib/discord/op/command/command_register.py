@@ -65,7 +65,7 @@ class CommandRegister:
             msg
         )
 
-    def get_help_message(self):
+    def get_help_message(self) -> str:
         """
         ヘルプメッセージを取得する。
         :return: ヘルプメッセージ。

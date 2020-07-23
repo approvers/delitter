@@ -109,7 +109,7 @@ class ReactionEvent:
 
         await message.channel.send("投票が全てぶっちされたので、該当するメッセージを削除しました。号泣しています。")
 
-    def validate_reaction(self, reaction: discord.Reaction, user: discord.Member):
+    def validate_reaction(self, reaction: discord.Reaction, user: discord.Member) -> bool:
         """
         リアクションが適切か確認し、ロールバックが必要かを判断する。
         :param reaction: バリデートするリアクション。
