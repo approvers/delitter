@@ -3,6 +3,7 @@ create_vote_command.py
 ------------------------
 投票を作成するためのコマンドが入っている。
 """
+import functools
 import re
 import unicodedata
 from abc import ABC
@@ -99,15 +100,20 @@ def validate_tweet(text) -> str:
     return ""
 
 
+def char_apparently_length(char: str) -> int:
+    """
+    文字単体の見かけ上の長さを所得する。
+    :param char: 文字。
+    :return: 文字の見かけ上の長さ。
+    """
+    width_text = unicodedata.east_asian_width(char)
+    return 2 if width_text in ["F", "W", "A"] else 1
+
+
 def get_apparently_length(text: str) -> int:
     """
     文字列の見かけ上の長さを取得する。
     :param text: 文字列。
     :return: 見かけ上の長さ。
     """
-    length = 0
-    for c in text:
-        width_text = unicodedata.east_asian_width(c)
-        length += 2 if width_text in ["F", "W", "A"] else 1
-
-    return length
+    return functools.reduce(lambda l, r: 1 + char_apparently_length(r), text, 0)
