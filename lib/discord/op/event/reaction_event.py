@@ -13,9 +13,16 @@ from lib.settings.setting import Setting
 
 class ReactionEvent:
 
-    def __init__(self, setting: Setting, vote_record: TweetsVoteRecord):
+    def __init__(self, setting: Setting, vote_record: TweetsVoteRecord, bot_id: int):
+        """
+        ReactionEventを初期化する。
+        :param setting: Botの設定。
+        :param vote_record: ツイートの投票が記録されたレコード。
+        :param bot_id: 自身のID。
+        """
         self.setting = setting
         self.vote_record = vote_record
+        self.bot_id = bot_id
 
     async def on_reaction_add(self, reaction: discord.Reaction, user: discord.Member) -> bool:
         """
@@ -26,7 +33,7 @@ class ReactionEvent:
         :return: このイベントで可決が確定したか。
         """
 
-        if user.bot:
+        if user.id == self.bot_id:
             # Botがリアクションを追加した(原則的には初期化の時)は無視
             return False
 

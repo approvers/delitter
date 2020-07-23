@@ -3,7 +3,7 @@ client.py
 ------------------------
 DiscordのBotとして機能するクライアントが入っている。
 """
-from typing import Type, List
+from typing import Type, List, Optional
 
 import discord
 
@@ -28,11 +28,11 @@ class MainClient(discord.Client):
         :param vote_record: ツイートの投票を記録するレコード。
         """
         super(MainClient, self).__init__()
-        self.reaction_event_handler: ReactionEvent = ReactionEvent(setting, vote_record)
+        self.reaction_event_handler: Optional[ReactionEvent] = None
+        self.activity_channel: Optional[discord.TextChannel] = None
         self.command_register: CommandRegister = CommandRegister(setting)
         self.setting: Setting = setting
         self.vote_record: TweetsVoteRecord = vote_record
-        self.activity_channel: discord.TextChannel = None
 
     def launch(self):
         """
@@ -63,6 +63,9 @@ class MainClient(discord.Client):
 
         log("client-login", "設定に問題はありませんでした。コマンドのインスタンスを生成します…")
         self.command_register.initialize_commands(self.activity_channel.guild, self.vote_record)
+
+        log("client-login", "ReactionEventを初期化します…")
+        self.reaction_event_handler = ReactionEvent(self.setting, self.vote_record, self.user.id)
 
         log("client-login", "問題は発生しませんでした。起動メッセージを送信します…")
         await self.activity_channel.send("***†Delitter Ready†***")
