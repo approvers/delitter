@@ -24,11 +24,12 @@ class CreateVoteCommand(ABCCommand, ABC):
     """
     SPECIAL_CHARACTER_REGEX: re.Pattern = re.compile("<[@#:].*?>")
 
-    def __init__(self, guild: discord.Guild, setting: Setting):
-        super().__init__(guild, setting)
+    def __init__(self, guild: discord.Guild, setting: Setting, vote_record: TweetsVoteRecord):
+        super().__init__(guild, setting, vote_record)
         self.suffrage_mention = guild.get_role(setting.suffrage_role_id).mention
         self.guild = guild
         self.emoji_ids = setting.emoji_ids
+        self.vote_record = vote_record
 
     def get_command_info(self) -> CommandProperty:
         return CommandProperty(
@@ -68,7 +69,7 @@ class CreateVoteCommand(ABCCommand, ABC):
         await sent_message.edit(content="{}の皆さん、投票のお時間ですわよ！".format(self.suffrage_mention), embed=new_embed)
 
         # 保存してDone
-        TweetsVoteRecord.add(sent_message.id, tweet_content)
+        self.vote_record.add(sent_message.id, tweet_content)
         log("command-create", "以下のコンテンツを登録しました:\nID: {}\n{}".format(sent_message.id, tweet_content))
 
 

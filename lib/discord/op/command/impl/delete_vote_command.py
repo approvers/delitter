@@ -18,8 +18,9 @@ class DeleteVoteCommand(ABCCommand, ABC):
     投票を削除するためのコマンド。
     """
 
-    def __init__(self, guild: discord.Guild, setting: Setting):
-        super().__init__(guild, setting)
+    def __init__(self, guild: discord.Guild, setting: Setting, vote_record: TweetsVoteRecord):
+        super().__init__(guild, setting, vote_record)
+        self.vote_record = vote_record
 
     def get_command_info(self) -> CommandProperty:
         return CommandProperty(
@@ -40,17 +41,17 @@ class DeleteVoteCommand(ABCCommand, ABC):
             return
 
         # 該当する投票があるか
-        if TweetsVoteRecord.get(tweet_id) is None:
+        if self.vote_record.get(tweet_id) is None:
             await message.channel.send("残念、IDが間違っています")
             return
 
         # 投票が削除しようとしている人によって作成されたものかどうかを確認する
-        if TweetsVoteRecord.get(tweet_id).author.id != message.author.id:
+        if self.vote_record.get(tweet_id).author.id != message.author.id:
             await message.channel.send("人の投票消さないで♥")
             return
 
         # 該当する投票を削除する
-        TweetsVoteRecord.delete(tweet_id)
+        self.vote_record.delete(tweet_id)
         await (await message.channel.fetch_message(tweet_id)).delete()
 
         await message.channel.send("ID`{}` の投票を削除しました。".format(tweet_id))

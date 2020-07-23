@@ -9,11 +9,12 @@ from lib.data.tweet_votes_record import TweetsVoteRecord
 from lib.logging.logger import log
 
 
-async def on_approved(message: discord.Message):
+async def on_approved(message: discord.Message, vote_record: TweetsVoteRecord):
     """
     リアクションが可決されたときに発火されるイベント。
     Discord周りを処理する。
     :param message: 該当するメッセージ。
+    :param vote_record: ツイートの投票のレコード。
     """
     log("on_approved", "可決を確認しました。")
 
@@ -21,4 +22,4 @@ async def on_approved(message: discord.Message):
     new_embed.title = "†可決†"
     await message.edit(content="この投票は可決されました！もう受け付けていません。", embed=new_embed)
 
-    TweetsVoteRecord.delete(message.id)
+    vote_record.delete(message.id)

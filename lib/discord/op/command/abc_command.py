@@ -7,6 +7,7 @@ from abc import ABCMeta, abstractmethod
 
 import discord
 
+from lib.data.tweet_votes_record import TweetsVoteRecord
 from lib.discord.op.command.command_property import CommandProperty
 from lib.settings.setting import Setting
 
@@ -17,7 +18,7 @@ class ABCCommand(metaclass=ABCMeta):
     """
 
     @abstractmethod
-    def __init__(self, guild: discord.Guild, setting: Setting):
+    def __init__(self, guild: discord.Guild, setting: Setting, vote_record: TweetsVoteRecord):
         """
         インスタンスを初期化する。
         初期化はBotのログイン直後に行われる。

@@ -7,8 +7,10 @@ from typing import Dict, Type, List
 
 import discord
 
+from lib.data.tweet_votes_record import TweetsVoteRecord
 from lib.discord.op.command.abc_command import ABCCommand
-from lib.discord.op.event import reaction_event, approve_event
+from lib.discord.op.event import approve_event
+from lib.discord.op.event.reaction_event import ReactionEvent
 from lib.logging.logger import log
 from lib.settings.setting import Setting
 
@@ -18,13 +20,16 @@ class MainClient(discord.Client):
     DiscordのBot。
     """
 
-    def __init__(self, setting: Setting):
+    def __init__(self, setting: Setting, vote_record: TweetsVoteRecord):
         """
         指定した設定でクライアントを初期化する。
         :param setting: Botに使用する設定。
+        :param vote_record: ツイートの投票を記録するレコード。
         """
         super(MainClient, self).__init__()
+        self.reaction_event_handler: ReactionEvent = ReactionEvent(setting, vote_record)
         self.setting: Setting = setting
+        self.vote_record: TweetsVoteRecord = vote_record
         self.activity_channel: discord.TextChannel = None
         self.commands_type: List[Type[ABCCommand]] = []
         self.commands: Dict[str, ABCCommand] = {}
@@ -60,7 +65,7 @@ class MainClient(discord.Client):
 
         for command in self.commands_type:
             log("client-login", "{} を初期化します…".format(command.__name__))
-            command_instance = command(self.activity_channel.guild, self.setting)
+            command_instance = command(self.activity_channel.guild, self.setting, self.vote_record)
             self.commands[command_instance.get_command_info().identify] = command_instance
 
         log("client-login", "問題は発生しませんでした。起動メッセージを送信します…")
@@ -111,9 +116,9 @@ class MainClient(discord.Client):
         :param reaction: リアクションが追加された対象のメッセージの、現在のリアクションの状態
         :param user: 誰「が」リアクションを追加したか (who)
         """
-        approved = await reaction_event.on_reaction_add(reaction, user, self.setting)
+        approved = await self.reaction_event_handler.on_reaction_add(reaction, user)
         if approved:
-            await approve_event.on_approved(reaction.message)
+            await approve_event.on_approved(reaction.message, self.vote_record)
             # TODO: ツイートする
 
     async def on_reaction_remove(self, reaction: discord.Reaction, user: discord.Member):
@@ -122,7 +127,7 @@ class MainClient(discord.Client):
         :param reaction: リアクションが削除された対象のメッセージの、現在のリアクションの状態
         :param user: 誰「の」リアクションが削除されたか (whose)
         """
-        await reaction_event.on_reaction_remove(reaction, user, self.setting)
+        await self.reaction_event_handler.on_reaction_remove(reaction, user)
 
     async def on_reaction_clear(self, message: discord.Message, reactions: List[discord.Reaction]):
         """
@@ -131,7 +136,7 @@ class MainClient(discord.Client):
         :param reactions: 削除されたリアクションの情報。
         :return:
         """
-        await reaction_event.on_reaction_clear(message)
+        await self.reaction_event_handler.on_reaction_clear(message)
 
     def get_help_message(self):
         """
