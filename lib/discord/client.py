@@ -3,6 +3,7 @@ client.py
 ------------------------
 DiscordのBotとして機能するクライアントが入っている。
 """
+import traceback
 from typing import Type, List, Optional
 
 import discord
@@ -88,8 +89,16 @@ class MainClient(discord.Client):
 
         log("client-msg", "処理対象のメッセージを受信しました:\n{}".format(message.content))
 
-        # コマンドをパースする
-        await self.command_register.execute_command(message)
+        # コマンドを実行する
+        try:
+            await self.command_register.execute_command(message)
+        except Exception:
+            log("client-msg", "コマンド解析中に例外が発生しました！")
+            traceback.print_exc()
+            await message.channel.send(
+                "ああああああああああああああああああああああああああああああああ！！！！！！！！！！！！！！！！！！！！！！！"
+                "```{}```".format(traceback.format_exc())
+            )
 
     async def on_reaction_add(self, reaction: discord.Reaction, user: discord.Member):
         """
