@@ -1,9 +1,14 @@
+"""
+abc_command.py
+------------------------
+コマンドの基底となるクラスが入っている。
+"""
 from abc import ABCMeta, abstractmethod
 
 import discord
 
-from lib.discord.op.command.CommandInfo import CommandInfo
-from lib.settings.Setting import Setting
+from lib.discord.op.command.command_property import CommandProperty
+from lib.settings.setting import Setting
 
 
 class ABCCommand(metaclass=ABCMeta):
@@ -22,7 +27,7 @@ class ABCCommand(metaclass=ABCMeta):
         pass
 
     @abstractmethod
-    def get_command_info(self) -> CommandInfo:
+    def get_command_info(self) -> CommandProperty:
         """
         コマンドの情報を取得する。
         :return: コマンドの情報が代入されたCommandInfo
@@ -37,3 +42,10 @@ class ABCCommand(metaclass=ABCMeta):
         :param message: メッセージの情報。
         """
         pass
+
+    def __str__(self):
+        """
+        文字列で自己表現する。
+        :return: 自己表現の結果。
+        """
+        return str(self.get_command_info())

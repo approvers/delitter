@@ -1,3 +1,9 @@
+"""
+setting.py
+------------------------
+設定周りを司る。
+"""
+
 import json
 import os
 from typing import Dict
@@ -6,6 +12,9 @@ from typing.io import TextIO
 
 
 class Setting:
+    """
+    Botの設定。
+    """
 
     def __init__(self,
                  token: str,
