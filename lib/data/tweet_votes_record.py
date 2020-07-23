@@ -38,7 +38,7 @@ class TweetsVoteRecord:
                 return None
             return self.pending_tweets_list[tweet_id]
 
-    def delete(self, tweet_id):
+    def delete(self, tweet_id: int):
         """
         投票を削除する。
         :param tweet_id: 検索するID。
