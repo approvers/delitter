@@ -1,3 +1,8 @@
+"""
+client.py
+------------------------
+DiscordのBotとして機能するクライアントが入っている。
+"""
 from typing import Dict, Type, List
 
 import discord

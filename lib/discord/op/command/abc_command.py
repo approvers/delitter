@@ -1,3 +1,8 @@
+"""
+abc_command.py
+------------------------
+コマンドの基底となるクラスが入っている。
+"""
 from abc import ABCMeta, abstractmethod
 
 import discord

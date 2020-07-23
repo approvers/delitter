@@ -1,3 +1,9 @@
+"""
+setting.py
+------------------------
+設定周りを司る。
+"""
+
 import json
 import os
 from typing import Dict

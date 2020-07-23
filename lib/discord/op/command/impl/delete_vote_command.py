@@ -1,3 +1,8 @@
+"""
+delete_vote_command.py
+------------------------
+投票を削除するためのコマンドが入っている。
+"""
 from abc import ABC
 
 import discord

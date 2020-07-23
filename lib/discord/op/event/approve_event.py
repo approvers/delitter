@@ -1,3 +1,8 @@
+"""
+approve_event.py
+------------------------
+投票が可決されたときに発火される関数が入っている。
+"""
 import discord
 
 from lib.data.tweet_votes_record import TweetsVoteRecord

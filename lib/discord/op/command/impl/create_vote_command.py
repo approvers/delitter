@@ -1,3 +1,8 @@
+"""
+create_vote_command.py
+------------------------
+投票を作成するためのコマンドが入っている。
+"""
 import re
 import unicodedata
 from abc import ABC

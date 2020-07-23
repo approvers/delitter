@@ -1,3 +1,9 @@
+"""
+main.py
+------------------------
+プログラムのエントリポイント。
+"""
+
 from lib.discord.client import *
 from lib.discord.op.command.impl.create_vote_command import CreateTweetVoteCommand
 from lib.discord.op.command.impl.delete_vote_command import DeleteTweetVoteCommand

@@ -1,3 +1,8 @@
+"""
+logger.py
+------------------------
+標準出力にログを取るための関数が入っている。
+"""
 from datetime import datetime
 
 

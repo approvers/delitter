@@ -1,3 +1,8 @@
+"""
+tweet_vote.py
+------------------------
+ツイートの投票を司るクラスが入っている。
+"""
 import math
 import random
 

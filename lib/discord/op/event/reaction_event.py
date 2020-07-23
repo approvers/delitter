@@ -1,3 +1,8 @@
+"""
+reaction_event.py
+------------------------
+リアクションに変化があったときの処理が入っている。
+"""
 import discord
 
 from lib.data.tweet_votes_record import TweetsVoteRecord

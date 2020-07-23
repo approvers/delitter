@@ -1,3 +1,8 @@
+"""
+tweets_vote_record.py
+------------------------
+投票を保存するクラスが入っている。
+"""
 from typing import Dict
 
 from lib.data.tweet_vote import TweetVote
