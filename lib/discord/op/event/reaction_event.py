@@ -31,6 +31,11 @@ class ReactionEvent:
 
         log("react-add", "{}がリアクションを追加しました。".format(user.name))
 
+        # リアクションしたメッセージで投票を受け付けているかを確認する
+        if self.vote_record.get(reaction.message.id) is None:
+            log("reaction", "不正なメッセージへのリアクションでした。無視します。")
+            return True
+
         # リアクションが適切なものであるかを確認する
         if self.validate_reaction(reaction, user):
             # 不適切だった場合は削除する
@@ -60,16 +65,16 @@ class ReactionEvent:
         :param user: 誰「の」リアクションが削除されたか (whose)
         """
 
+        # 関係ないメッセージのリアクションが削除された
+        if self.vote_record.get(reaction.message.id) is None:
+            return
+
         # 参政権を持っていない人がリアクションを消しやがった
         if self.setting.suffrage_role_id not in [x.id for x in user.roles]:
             # お気持ち表明して帰る
             await reaction.message.channel.send(
                 "お前！！！！！！！！！！！！！！！！なんてことしてくれたんだ！！！！！！！！！！！！！！！！！！！！！！\n"
                 "***†卍 メス堕ち女装土下座生配信 卍†***奉れ！！！！！！！！！！！！！！！！よ！！！！！！！！！！！！！！！！！！！")
-            return
-
-        # 関係ないメッセージのリアクションが削除された
-        if self.vote_record.get(reaction.message.id) is None:
             return
 
         log("react-del", "{}がしたリアクションが削除されました。".format(user.name))
@@ -116,11 +121,6 @@ class ReactionEvent:
         :param user: リアクションしたユーザー。
         :return: ロールバックが必要な場合はTrue、必要ない場合はFalse。
         """
-
-        # そのリアクションが投票を受け付けているかを確認する
-        if self.vote_record.get(reaction.message.id) is None:
-            log("reaction", "不正なメッセージへのリアクションでした。ロールバックが必要です。")
-            return True
 
         # そのリアクションが適切な絵文字かを確認する
         if reaction.emoji.id not in self.setting.emoji_ids.values():
