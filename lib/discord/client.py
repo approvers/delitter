@@ -3,12 +3,13 @@ client.py
 ------------------------
 DiscordのBotとして機能するクライアントが入っている。
 """
-from typing import Dict, Type, List
+from typing import Type, List
 
 import discord
 
 from lib.data.tweet_votes_record import TweetsVoteRecord
 from lib.discord.op.command.abc_command import ABCCommand
+from lib.discord.op.command.command_register import CommandRegister
 from lib.discord.op.event import approve_event
 from lib.discord.op.event.reaction_event import ReactionEvent
 from lib.logging.logger import log
@@ -28,11 +29,10 @@ class MainClient(discord.Client):
         """
         super(MainClient, self).__init__()
         self.reaction_event_handler: ReactionEvent = ReactionEvent(setting, vote_record)
+        self.command_register: CommandRegister = CommandRegister(setting)
         self.setting: Setting = setting
         self.vote_record: TweetsVoteRecord = vote_record
         self.activity_channel: discord.TextChannel = None
-        self.commands_type: List[Type[ABCCommand]] = []
-        self.commands: Dict[str, ABCCommand] = {}
 
     def launch(self):
         """
@@ -47,7 +47,7 @@ class MainClient(discord.Client):
         実行対象のコマンドを登録する。
         :param command: 実行対象のコマンドのType。
         """
-        self.commands_type.append(command)
+        self.command_register.add_command(command)
 
     async def on_ready(self):
         """
@@ -62,11 +62,7 @@ class MainClient(discord.Client):
             raise RuntimeError("Activity channel is not found! Check your \"activity_channel_id\" value.")
 
         log("client-login", "設定に問題はありませんでした。コマンドのインスタンスを生成します…")
-
-        for command in self.commands_type:
-            log("client-login", "{} を初期化します…".format(command.__name__))
-            command_instance = command(self.activity_channel.guild, self.setting, self.vote_record)
-            self.commands[command_instance.get_command_info().identify] = command_instance
+        self.command_register.initialize_commands(self.activity_channel.guild, self.vote_record)
 
         log("client-login", "問題は発生しませんでした。起動メッセージを送信します…")
         await self.activity_channel.send("***†Delitter Ready†***")
@@ -90,25 +86,7 @@ class MainClient(discord.Client):
         log("client-msg", "処理対象のメッセージを受信しました:\n{}".format(message.content))
 
         # コマンドをパースする
-        cmd_header = message.content.split(" ")[0]
-        cmd_identity = cmd_header[len(self.setting.prefix):]
-
-        if cmd_identity in ["", "help"]:
-            # コマンドが指定されないか、helpの場合はhelpを送信する
-            await message.channel.send(self.get_help_message())
-            return
-
-        if cmd_identity not in self.commands:
-            # コマンドが見つからない
-            log("client-msg", "コマンドが見つかりませんでした: 「{}」".format(cmd_identity))
-            await self.activity_channel.send("知らないコマンドが出てきました:thinking:")
-            return
-
-        # コマンドを実行する
-        await self.commands[cmd_identity].parse_command(
-            message.content[len(cmd_header) + 1:],
-            message
-        )
+        await self.command_register.parse_command(message)
 
     async def on_reaction_add(self, reaction: discord.Reaction, user: discord.Member):
         """
@@ -137,17 +115,3 @@ class MainClient(discord.Client):
         :return:
         """
         await self.reaction_event_handler.on_reaction_clear(message)
-
-    def get_help_message(self):
-        """
-        ヘルプメッセージを取得する。
-        :return: ヘルプメッセージ。
-        """
-        help_message = "***†Delitter†***\nツイートを審議するためのBotです。"
-        for cmd in self.commands.values():
-            help_message += str(cmd)
-        return help_message
-
-
-
-
