@@ -28,6 +28,12 @@ class TweetVote:
         self.approves = 0
         self.denys = 0
 
+    def get_approval_rate(self):
+        if (self.approves + self.denys) == 0:
+            return 0
+        else:
+            return math.floor(self.approves / (self.approves + self.denys) * 100)
+
     def to_embed(self) -> discord.Embed:
         """
         TweetVoteをDiscordのメッセージに埋め込める形に変換する。
@@ -35,10 +41,7 @@ class TweetVote:
         """
 
         # 可決率を計算する。母数が0の場合は0%とする。
-        if (self.approves + self.denys) == 0:
-            approve_rate = 0
-        else:
-            approve_rate = math.floor(self.approves / (self.approves + self.denys) * 100)
+        approve_rate = self.get_approval_rate()
 
         # embedを組み立てる
         embed = discord.Embed()
