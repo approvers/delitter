@@ -4,7 +4,7 @@ tweets_vote_record.py
 投票を保存するクラスが入っている。
 """
 import threading
-from typing import Dict
+from typing import Dict, Optional
 
 from lib.data.tweet_vote import TweetVote
 
@@ -27,7 +27,7 @@ class TweetsVoteRecord:
         with self.thread_lock:
             self.pending_tweets_list[tweet_id] = content
 
-    def get(self, tweet_id: int):
+    def get(self, tweet_id: int) -> Optional[TweetVote]:
         """
         投票を取得する。
         :param tweet_id: 検索するID。

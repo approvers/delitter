@@ -29,7 +29,7 @@ class CommandProperty:
         self.name = name
         self.description = description
 
-    def __str__(self):
+    def __str__(self) -> str:
         """
         文字列でコマンドのプロパティを表現する
         :return: 表現した文字列。

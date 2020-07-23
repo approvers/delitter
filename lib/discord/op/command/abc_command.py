@@ -45,7 +45,7 @@ class ABCCommand(metaclass=ABCMeta):
         """
         pass
 
-    def __str__(self):
+    def __str__(self) -> str:
         """
         文字列で自己表現する。
         :return: 自己表現の結果。

@@ -30,7 +30,7 @@ class TweetVote:
         self.approves = 0
         self.denys = 0
 
-    def get_approval_rate(self):
+    def get_approval_rate(self) -> int:
         """
         投票の可決率を計算する。
         総票数がゼロの場合は0とする。
@@ -41,7 +41,7 @@ class TweetVote:
 
         return math.floor(self.approves / (self.approves + self.denys) * 100)
 
-    def approved(self, judge_standard: JudgeStandard):
+    def approved(self, judge_standard: JudgeStandard) -> bool:
         """
         可決状態にあるかを確認する。
         :param judge_standard: 可決の基準。
@@ -90,7 +90,7 @@ class TweetVote:
         # 返す。
         return embed
 
-    def __str__(self):
+    def __str__(self) -> str:
         """
         文字列izeする。
         :return: 文字列と化したTweetVote

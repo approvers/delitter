@@ -73,7 +73,7 @@ class CreateVoteCommand(ABCCommand, ABC):
         log("command-create", "以下のコンテンツを登録しました:\nID: {}\n{}".format(sent_message.id, tweet_content))
 
 
-def validate_tweet(text) -> str:
+def validate_tweet(text: str) -> str:
     """
     ツイート内容に問題がないか確認する
     :param text: 確認するツイート内容。
