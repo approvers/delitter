@@ -4,7 +4,7 @@ import discord
 
 from lib.data.TweetsVoteRecord import TweetsVoteRecord
 from lib.discord.op.command.ABCCommand import ABCCommand
-from lib.discord.op.command.CommandInfo import CommandInfo
+from lib.discord.op.command.CommandProperty import CommandProperty
 from lib.settings.Setting import Setting
 
 
@@ -16,8 +16,8 @@ class DeleteTweetVoteCommand(ABCCommand, ABC):
     def __init__(self, guild: discord.Guild, setting: Setting):
         super().__init__(guild, setting)
 
-    def get_command_info(self) -> CommandInfo:
-        return CommandInfo(
+    def get_command_info(self) -> CommandProperty:
+        return CommandProperty(
             identify="del",
             args_format="(削除する投票のID)",
             name="投票を削除する",

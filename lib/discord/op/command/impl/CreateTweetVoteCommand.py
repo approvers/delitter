@@ -8,7 +8,7 @@ import discord
 from lib.data.TweetVote import TweetVote
 from lib.data.TweetsVoteRecord import TweetsVoteRecord
 from lib.discord.op.command.ABCCommand import ABCCommand
-from lib.discord.op.command.CommandInfo import CommandInfo
+from lib.discord.op.command.CommandProperty import CommandProperty
 from lib.logging.Logger import log
 from lib.settings.Setting import Setting
 
@@ -25,8 +25,8 @@ class CreateTweetVoteCommand(ABCCommand, ABC):
         self.guild = guild
         self.emoji_ids = setting.emoji_ids
 
-    def get_command_info(self) -> CommandInfo:
-        return CommandInfo(
+    def get_command_info(self) -> CommandProperty:
+        return CommandProperty(
             identify="create",
             args_format="(ツイートの内容)",
             name="ツイートを作成する",

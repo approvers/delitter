@@ -2,7 +2,7 @@ from abc import ABCMeta, abstractmethod
 
 import discord
 
-from lib.discord.op.command.CommandInfo import CommandInfo
+from lib.discord.op.command.CommandProperty import CommandProperty
 from lib.settings.Setting import Setting
 
 
@@ -22,7 +22,7 @@ class ABCCommand(metaclass=ABCMeta):
         pass
 
     @abstractmethod
-    def get_command_info(self) -> CommandInfo:
+    def get_command_info(self) -> CommandProperty:
         """
         コマンドの情報を取得する。
         :return: コマンドの情報が代入されたCommandInfo

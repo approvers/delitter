@@ -1,4 +1,4 @@
-class CommandInfo:
+class CommandProperty:
     """
     コマンドの情報を保持するクラス。
     """
