@@ -8,6 +8,7 @@ import json
 import os
 from typing import Dict
 
+from jsonschema import validate
 from typing.io import TextIO
 
 
@@ -55,7 +56,13 @@ class Setting:
         :param file: Jsonファイルを参照しているIO。
         :return: 生成されたMainClientSetting
         """
+
+        with open("lib/settings/settings_scheme.json", mode="r") as f:
+            scheme_json: dict = json.load(f)
+
         raw_json: dict = json.load(file)
+        validate(raw_json, scheme_json)
+
         raw_json.setdefault("token", None)
 
         return Setting(
