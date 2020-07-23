@@ -3,14 +3,14 @@ from typing import Dict
 from lib.data.TweetVote import TweetVote
 
 
-class PendingTweetsManager:
+class TweetsVoteRecord:
     """
     進行中の投票をIDと関連付けて持っておくクラス。シングルトン。
     """
 
     def __new__(cls, *args, **kwargs):
         if not hasattr(cls, "_instance"):
-            cls._instance = super(PendingTweetsManager, cls).__new__(cls)
+            cls._instance = super(TweetsVoteRecord, cls).__new__(cls)
         return cls._instance
 
     def __init__(self):

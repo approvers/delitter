@@ -5,8 +5,8 @@ from math import ceil
 
 import discord
 
-from lib.data.PendingTweetsManager import PendingTweetsManager
 from lib.data.TweetVote import TweetVote
+from lib.data.TweetsVoteRecord import TweetsVoteRecord
 from lib.discord.op.command.ABCCommand import ABCCommand
 from lib.discord.op.command.CommandInfo import CommandInfo
 from lib.logging.Logger import log
@@ -21,7 +21,6 @@ class CreateTweetVoteCommand(ABCCommand, ABC):
 
     def __init__(self, guild: discord.Guild, setting: Setting):
         super().__init__(guild, setting)
-        self.pending_tweets_manager = PendingTweetsManager()
         self.suffrage_mention = guild.get_role(setting.suffrage_role_id).mention
         self.guild = guild
         self.emoji_ids = setting.emoji_ids
@@ -64,7 +63,7 @@ class CreateTweetVoteCommand(ABCCommand, ABC):
         await sent_message.edit(content="{}の皆さん、投票のお時間ですわよ！".format(self.suffrage_mention), embed=new_embed)
 
         # 保存してDone
-        self.pending_tweets_manager.add(sent_message.id, tweet_content)
+        TweetsVoteRecord().add(sent_message.id, tweet_content)
         log("command-create", "以下のコンテンツを登録しました:\nID: {}\n{}".format(sent_message.id, tweet_content))
 
 

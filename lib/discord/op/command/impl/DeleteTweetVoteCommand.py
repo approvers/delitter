@@ -2,7 +2,7 @@ from abc import ABC
 
 import discord
 
-from lib.data.PendingTweetsManager import PendingTweetsManager
+from lib.data.TweetsVoteRecord import TweetsVoteRecord
 from lib.discord.op.command.ABCCommand import ABCCommand
 from lib.discord.op.command.CommandInfo import CommandInfo
 from lib.settings.Setting import Setting
@@ -15,7 +15,6 @@ class DeleteTweetVoteCommand(ABCCommand, ABC):
 
     def __init__(self, guild: discord.Guild, setting: Setting):
         super().__init__(guild, setting)
-        self.tweet_manager = PendingTweetsManager()
 
     def get_command_info(self) -> CommandInfo:
         return CommandInfo(
@@ -36,12 +35,12 @@ class DeleteTweetVoteCommand(ABCCommand, ABC):
             return
 
         # 該当する投票があるか
-        if self.tweet_manager.get(tweet_id) is None:
+        if TweetsVoteRecord().get(tweet_id) is None:
             await message.channel.send("残念、IDが間違っています")
             return
 
         # 該当する投票を削除する
-        self.tweet_manager.delete(tweet_id)
+        TweetsVoteRecord().delete(tweet_id)
         await (await message.channel.fetch_message(tweet_id)).delete()
 
         await message.channel.send("ID`{}` の投票を削除しました。".format(tweet_id))
