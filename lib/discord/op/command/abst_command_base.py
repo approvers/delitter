@@ -1,5 +1,5 @@
 """
-abc_command.py
+abst_command_base.py
 ------------------------
 コマンドの基底となるクラスが入っている。
 """
@@ -12,7 +12,7 @@ from lib.discord.op.command.command_property import CommandProperty
 from lib.settings.setting import Setting
 
 
-class ABCCommand(metaclass=ABCMeta):
+class AbstCommandBase(metaclass=ABCMeta):
     """
     コマンドの抽象クラス。
     """

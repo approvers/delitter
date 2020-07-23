@@ -3,7 +3,7 @@ from typing import Type, List, Dict
 import discord
 
 from lib.data.tweet_votes_record import TweetsVoteRecord
-from lib.discord.op.command.abc_command import ABCCommand
+from lib.discord.op.command.abst_command_base import AbstCommandBase
 from lib.logging.logger import log
 from lib.settings.setting import Setting
 
@@ -18,11 +18,11 @@ class CommandRegister:
         初期化する。
         :param setting: Botの設定
         """
-        self.commands_type: List[Type[ABCCommand]] = []
-        self.commands: Dict[str, ABCCommand] = {}
+        self.commands_type: List[Type[AbstCommandBase]] = []
+        self.commands: Dict[str, AbstCommandBase] = {}
         self.setting = setting
 
-    def add_command(self, command: Type[ABCCommand]):
+    def add_command(self, command: Type[AbstCommandBase]):
         """
         実行対象のコマンドを登録する。
         :param command: 実行対象のコマンドのType。

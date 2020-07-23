@@ -12,13 +12,13 @@ import discord
 
 from lib.data.tweet_vote import TweetVote, create_tweet_vote_embed
 from lib.data.tweet_votes_record import TweetsVoteRecord
-from lib.discord.op.command.abc_command import ABCCommand
+from lib.discord.op.command.abst_command_base import AbstCommandBase
 from lib.discord.op.command.command_property import CommandProperty
 from lib.logging.logger import log
 from lib.settings.setting import Setting
 
 
-class CreateVoteCommand(ABCCommand, ABC):
+class CreateVoteCommand(AbstCommandBase, ABC):
     """
     ツイートを作成するコマンド。
     """
