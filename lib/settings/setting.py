@@ -51,7 +51,7 @@ class Setting:
 
 def create_setting_from_json(file: TextIO) -> Setting:
     """
-    Jsonファイルから設定をパースしてMainClientSettingを生成する
+    Jsonファイルから設定をパースしてSettingを生成する
     :param file: Jsonファイルを参照しているIO。
     :return: 生成されたSetting
     """
