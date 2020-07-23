@@ -10,7 +10,7 @@ from math import ceil
 
 import discord
 
-from lib.data.tweet_vote import TweetVote
+from lib.data.tweet_vote import TweetVote, create_tweet_vote_embed
 from lib.data.tweet_votes_record import TweetsVoteRecord
 from lib.discord.op.command.abc_command import ABCCommand
 from lib.discord.op.command.command_property import CommandProperty
@@ -52,7 +52,7 @@ class CreateVoteCommand(ABCCommand, ABC):
         tweet_content = TweetVote(text, message.author)
 
         # 投票用のEmbedを作成する
-        embed = tweet_content.to_embed()
+        embed = create_tweet_vote_embed(tweet_content)
         embed.set_footer(text="†ACQUIRING ID IN PROGRESS†")
         sent_message: discord.Message = await message.channel.send("IDを取得しています…", embed=embed)
 

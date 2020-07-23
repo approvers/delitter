@@ -5,6 +5,7 @@ reaction_event.py
 """
 import discord
 
+from lib.data.tweet_vote import create_tweet_vote_embed
 from lib.data.tweet_votes_record import TweetsVoteRecord
 from lib.logging.logger import log
 from lib.settings.setting import Setting
@@ -52,7 +53,7 @@ class ReactionEvent:
             tweet_vote.denys += 1
 
         # 更新した情報をEmbedに反映する
-        embed = tweet_vote.to_embed()
+        embed = create_tweet_vote_embed(tweet_vote)
         embed.set_footer(text="ID: †{}†".format(reaction.message.id))
         await reaction.message.edit(embed=embed)
 
@@ -89,7 +90,7 @@ class ReactionEvent:
             tweet_vote.denys -= 1
 
         # Embedに反映する
-        embed = tweet_vote.to_embed()
+        embed = create_tweet_vote_embed(tweet_vote)
         embed.set_footer(text="ID: †{}†".format(reaction.message.id))
         await reaction.message.edit(embed=embed)
 
