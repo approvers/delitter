@@ -5,23 +5,37 @@ import discord
 
 
 class TweetVote:
+    """
+    ツイートの投票。
+    """
 
     def __init__(self,
                  content: str,
                  author: discord.User
                  ):
+        """
+        投票を初期化する。
+        :param content: ツイートする内容。
+        :param author: 誰が投票を作成したか。
+        """
         self.content = content
         self.author = author
         self.approves = 0
         self.denys = 0
 
     def to_embed(self) -> discord.Embed:
+        """
+        TweetVoteをDiscordのメッセージに埋め込める形に変換する。
+        :return: Embed。
+        """
 
+        # 可決率を計算する。母数が0の場合は0%とする。
         if (self.approves + self.denys) == 0:
             approve_rate = 0
         else:
             approve_rate = math.floor(self.approves / (self.approves + self.denys) * 100)
 
+        # embedを組み立てる
         embed = discord.Embed()
         embed.title = "†ツイート審議待ち†"
         embed.description = "以下のリアクションから投票してください。\nリアクション全部消したらメス堕ちさせるからな"
@@ -39,8 +53,13 @@ class TweetVote:
             inline=False
         )
 
+        # 返す。
         return embed
 
     def __str__(self):
+        """
+        文字列izeする。
+        :return: 文字列と化したTweetVote
+        """
         return "{}\nAuthored by: {}".format(self.content, self.author)
 

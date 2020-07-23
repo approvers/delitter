@@ -6,6 +6,9 @@ from typing.io import TextIO
 
 
 class Setting:
+    """
+    Botの設定。
+    """
 
     def __init__(self,
                  token: str,

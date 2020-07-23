@@ -14,6 +14,9 @@ from lib.settings.Setting import Setting
 
 
 class CreateTweetVoteCommand(ABCCommand, ABC):
+    """
+    ツイートを作成するコマンド。
+    """
     SPECIAL_CHARACTER_REGEX: re.Pattern = re.compile("<[@#:].*?>")
 
     def __init__(self, guild: discord.Guild, setting: Setting):

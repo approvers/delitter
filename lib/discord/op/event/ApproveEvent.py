@@ -5,6 +5,11 @@ from lib.logging.Logger import log
 
 
 async def on_approved(message: discord.Message):
+    """
+    リアクションが可決されたときに発火されるイベント。
+    Discord周りを処理する。
+    :param message: 該当するメッセージ。
+    """
     log("on_approved", "可決を確認しました。")
 
     new_embed = message.embeds[0]
