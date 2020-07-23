@@ -24,6 +24,7 @@ class ABCCommand(metaclass=ABCMeta):
         初期化はBotのログイン直後に行われる。
         :param guild: Botが所属するギルド。
         :param setting: Botの設定。
+        :param vote_record: ツイートの投票を管理するクラス。
         """
         pass
 
