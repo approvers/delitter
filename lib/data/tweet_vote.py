@@ -34,6 +34,12 @@ class TweetVote:
         else:
             return math.floor(self.approves / (self.approves + self.denys) * 100)
 
+    def approved(self, required_total: int, required_rate: int):
+        if (self.approves + self.denys) < required_total:
+            return False
+
+        return (self.approves / (self.approves + self.denys)) >= required_rate
+
     def to_embed(self) -> discord.Embed:
         """
         TweetVoteをDiscordのメッセージに埋め込める形に変換する。

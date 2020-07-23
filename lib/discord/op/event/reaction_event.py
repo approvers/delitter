@@ -52,10 +52,7 @@ class ReactionEvent:
         await reaction.message.edit(embed=embed)
 
         # 可決状態になったかを返す
-        return (
-                (tweet_vote.approves + tweet_vote.denys) >= self.setting.approve_total and
-                tweet_vote.approves / (tweet_vote.approves + tweet_vote.denys) * 100 >= self.setting.approve_rate
-        )
+        return tweet_vote.approved(self.setting.approve_total, self.setting.approve_total)
 
     async def on_reaction_remove(self, reaction: discord.Reaction, user: discord.Member):
         """
