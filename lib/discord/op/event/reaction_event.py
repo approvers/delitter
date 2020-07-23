@@ -33,7 +33,7 @@ async def on_reaction_add(reaction: discord.Reaction, user: discord.Member, sett
         return False
 
     # TweetsVoteRecordから該当するTweetVoteを持ってくる
-    tweet_vote = TweetsVoteRecord().get(reaction.message.id)
+    tweet_vote = TweetsVoteRecord.get(reaction.message.id)
 
     # リアクションを基に投票状態を更新
     if reaction.emoji.id == setting.emoji_ids["approve"]:
@@ -72,7 +72,7 @@ async def on_reaction_remove(reaction: discord.Reaction, user: discord.Member, s
     log("react-del", "{}がしたリアクションが削除されました。".format(user.name))
 
     # TweetsVoteRecordから該当するTweetVoteを持ってくる
-    tweet_vote = TweetsVoteRecord().get(reaction.message.id)
+    tweet_vote = TweetsVoteRecord.get(reaction.message.id)
 
     # リアクションを基に投票状態を更新する
     if reaction.emoji.id == setting.emoji_ids["approve"]:
@@ -102,7 +102,7 @@ async def on_reaction_clear(message: discord.Message):
     log("react-clr", "ID: {}に関連付けされた投票が全て削除されました。該当する投票を登録から削除します。")
 
     # 整合性がvoidに還ったので消す
-    TweetsVoteRecord().delete(message.id)
+    TweetsVoteRecord.delete(message.id)
     await message.delete()
 
     await message.channel.send("投票が全てぶっちされたので、該当するメッセージを削除しました。号泣しています。")
@@ -118,7 +118,7 @@ def validate_reaction(reaction: discord.Reaction, user: discord.Member, setting:
     """
 
     # そのリアクションが投票を受け付けているかを確認する
-    if TweetsVoteRecord().get(reaction.message.id) is None:
+    if TweetsVoteRecord.get(reaction.message.id) is None:
         log("reaction", "不正なメッセージへのリアクションでした。ロールバックが必要です。")
         return True
 

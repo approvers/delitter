@@ -68,7 +68,7 @@ class CreateVoteCommand(ABCCommand, ABC):
         await sent_message.edit(content="{}の皆さん、投票のお時間ですわよ！".format(self.suffrage_mention), embed=new_embed)
 
         # 保存してDone
-        TweetsVoteRecord().add(sent_message.id, tweet_content)
+        TweetsVoteRecord.add(sent_message.id, tweet_content)
         log("command-create", "以下のコンテンツを登録しました:\nID: {}\n{}".format(sent_message.id, tweet_content))
 
 
