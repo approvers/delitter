@@ -51,7 +51,6 @@ class ReactionEvent:
         embed.set_footer(text="ID: {}".format(reaction.message.id))
         await reaction.message.edit(embed=embed)
 
-        # 可決状態になったかを返す
         return tweet_vote.approved(self.setting.approve_total, self.setting.approve_total)
 
     async def on_reaction_remove(self, reaction: discord.Reaction, user: discord.Member):
