@@ -28,3 +28,10 @@ class CommandProperty:
         self.args_format = args_format
         self.name = name
         self.description = description
+
+    def __str__(self):
+        """
+        文字列でコマンドのプロパティを表現する
+        :return: 表現した文字列。
+        """
+        return "```{} {}\n  {}```".format(self.identify, self.name, self.description)
