@@ -3,6 +3,7 @@ reaction_event.py
 ------------------------
 リアクションに変化があったときの処理が入っている。
 """
+
 import discord
 
 from lib.data.tweet_votes_record import TweetsVoteRecord
@@ -13,16 +14,18 @@ from lib.settings.setting import Setting
 
 class ReactionEvent:
 
-    def __init__(self, setting: Setting, vote_record: TweetsVoteRecord, bot_id: int):
+    RESPOND_REQUIRED = 0
+    NO_RESPOND_REQUIRED = 1
+    ROLLBACK_REQUIRED = 2
+
+    def __init__(self, setting: Setting, vote_record: TweetsVoteRecord):
         """
         ReactionEventを初期化する。
         :param setting: Botの設定。
         :param vote_record: ツイートの投票が記録されたレコード。
-        :param bot_id: 自身のID。
         """
         self.setting = setting
         self.vote_record = vote_record
-        self.bot_id = bot_id
 
     async def on_reaction_add(self, reaction: discord.Reaction, user: discord.Member) -> bool:
         """
@@ -33,20 +36,15 @@ class ReactionEvent:
         :return: このイベントで可決が確定したか。
         """
 
-        if user.id == self.bot_id:
-            # Botがリアクションを追加した(原則的には初期化の時)は無視
+        # イベントに対してどう反応すべきかを確認する
+        response = self.validate_reaction(reaction, user)
+
+        # 反応の必要がないか
+        if response == ReactionEvent.NO_RESPOND_REQUIRED:
             return False
 
-        log("react-add", "{}がリアクションを追加しました。".format(user.name))
-
-        # リアクションしたメッセージで投票を受け付けているかを確認する
-        if self.vote_record.get(reaction.message.id) is None:
-            log("reaction", "不正なメッセージへのリアクションでした。無視します。")
-            return True
-
-        # リアクションが適切なものであるかを確認する
-        if self.validate_reaction(reaction, user):
-            # 不適切だった場合は削除する
+        # ロールバックが必要か
+        if response == ReactionEvent.ROLLBACK_REQUIRED:
             await reaction.message.remove_reaction(reaction.emoji, user)
             return False
 
@@ -73,13 +71,16 @@ class ReactionEvent:
         :param user: 誰「の」リアクションが削除されたか (whose)
         """
 
-        # 関係ないメッセージのリアクションが削除された
-        if self.vote_record.get(reaction.message.id) is None:
-            return
+        # イベントに対してどう反応すべきかを確認する
+        response = self.validate_reaction(reaction, user)
 
-        # 参政権を持っていない人がリアクションを消しやがった
-        if self.setting.suffrage_role_id not in [x.id for x in user.roles]:
-            # お気持ち表明して帰る
+        # 反応の必要がないか
+        if response == ReactionEvent.NO_RESPOND_REQUIRED:
+            return False
+
+        # ロールバックが必要か
+        if response == ReactionEvent.ROLLBACK_REQUIRED:
+            # 削除されるとロールバックでないのでお気持ち表明して帰る
             await reaction.message.channel.send(
                 "お前！！！！！！！！！！！！！！！！なんてことしてくれたんだ！！！！！！！！！！！！！！！！！！！！！！\n"
                 "***†卍 メス堕ち女装土下座生配信 卍†***奉れ！！！！！！！！！！！！！！！！よ！！！！！！！！！！！！！！！！！！！")
@@ -122,7 +123,7 @@ class ReactionEvent:
 
         await message.channel.send("投票が全てぶっちされたので、該当するメッセージを削除しました。号泣しています。")
 
-    def validate_reaction(self, reaction: discord.Reaction, user: discord.Member) -> bool:
+    def validate_reaction(self, reaction: discord.Reaction, user: discord.Member) -> int:
         """
         リアクションが適切か確認し、ロールバックが必要かを判断する。
         :param reaction: バリデートするリアクション。
@@ -130,16 +131,19 @@ class ReactionEvent:
         :return: ロールバックが必要な場合はTrue、必要ない場合はFalse。
         """
 
+        if self.vote_record.get(reaction.message.id) is None:
+            return ReactionEvent.NO_RESPOND_REQUIRED
+
         # そのリアクションが適切な絵文字かを確認する
         if reaction.emoji.id not in self.setting.emoji_ids.values():
-            log("reaction", "不正なリアクションです。ロールバックが必要です。")
-            return True
+            log("reaction", "不正なリアクションです。")
+            return ReactionEvent.NO_RESPOND_REQUIRED
 
         # そのリアクションをした人が参政権を持っているかを確認する
         if self.setting.suffrage_role_id not in [x.id for x in user.roles]:
             log("reaction", "不正なユーザーからのリアクションです。ロールバックが必要です。")
-            return True
+            return ReactionEvent.ROLLBACK_REQUIRED
 
         # 何も問題なければロールバックは不要
-        return False
+        return ReactionEvent.RESPOND_REQUIRED
 

@@ -4,7 +4,7 @@ client.py
 DiscordのBotとして機能するクライアントが入っている。
 """
 import traceback
-from typing import Type, List, Optional
+from typing import Type, List, Optional, Union
 
 import discord
 
@@ -66,7 +66,7 @@ class MainClient(discord.Client):
         self.command_register.initialize_commands(self.activity_channel.guild, self.vote_record)
 
         log("client-login", "ReactionEventを初期化します…")
-        self.reaction_event_handler = ReactionEvent(self.setting, self.vote_record, self.user.id)
+        self.reaction_event_handler = ReactionEvent(self.setting, self.vote_record)
 
         log("client-login", "問題は発生しませんでした。起動メッセージを送信します…")
         await self.activity_channel.send("***†Delitter Ready†***")
@@ -79,10 +79,10 @@ class MainClient(discord.Client):
         """
 
         # 処理対象のメッセージかを確認する
-        if message.author.bot or message.channel.id != self.setting.activity_channel_id:
+        if not self.check_response_required(message.channel, message.author):
             return
 
-        if not message.content.startswith(self.setting.prefix):
+        if message.author.bot and not message.content.startswith(self.setting.prefix):
             return
 
         log("client-msg", "処理対象のメッセージを受信しました:\n{}".format(message.content))
@@ -105,7 +105,7 @@ class MainClient(discord.Client):
         :param user: 誰「が」リアクションを追加したか (who)
         """
 
-        if reaction.message.channel.id != self.setting.activity_channel_id:
+        if not self.check_response_required(reaction.message.channel, user):
             return
 
         approved = await self.reaction_event_handler.on_reaction_add(reaction, user)
@@ -119,7 +119,7 @@ class MainClient(discord.Client):
         :param reaction: リアクションが削除された対象のメッセージの、現在のリアクションの状態
         :param user: 誰「の」リアクションが削除されたか (whose)
         """
-        if reaction.message.channel.id != self.setting.activity_channel_id:
+        if not self.check_response_required(reaction.message.channel, user):
             return
 
         await self.reaction_event_handler.on_reaction_remove(reaction, user)
@@ -131,7 +131,23 @@ class MainClient(discord.Client):
         :param reactions: 削除されたリアクションの情報。
         :return:
         """
-        if message.channel.id != self.setting.activity_channel_id:
+        if not self.check_response_required(message.channel, message.user):
             return
 
         await self.reaction_event_handler.on_reaction_clear(message)
+
+    def check_response_required(self, channel: discord.TextChannel, user: Union[discord.User, discord.Member]):
+        """
+        イベントに対して反応するべきかを確認する。
+        事前に指定されたチャンネルで発生したか、または自分が起こしたイベントだった場合はFalseを返す。
+        :param channel: イベントが発生したチャンネル。
+        :param user: イベントを発生させたユーザー。
+        :return: 反応するべきである場合はTrue、すべきでない場合はFalseを返す。
+        """
+        if channel.id != self.setting.activity_channel_id:
+            return False
+
+        if user.id == self.user.id:
+            return False
+
+        return True
