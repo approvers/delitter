@@ -4,12 +4,11 @@ client.py
 DiscordのBotとして機能するクライアントが入っている。
 """
 import traceback
-from typing import Type, List, Optional, Union
+from typing import List, Optional, Union
 
 import discord
 
 from lib.data.tweet_votes_record import TweetsVoteRecord
-from lib.discord.op.command.abst_command_base import AbstCommandBase
 from lib.discord.op.command.command_register import CommandRegister
 from lib.discord.op.event.approve_event import ApproveEvent
 from lib.discord.op.event.reaction_event import ReactionEvent
@@ -51,13 +50,6 @@ class MainClient(discord.Client):
         """
         log("client-login", "ログイン処理を開始します。")
         self.run(self.setting.token)
-
-    def add_command(self, command: Type[AbstCommandBase]):
-        """
-        実行対象のコマンドを登録する。
-        :param command: 実行対象のコマンドのType。
-        """
-        self.command_register.add_command(command)
 
     async def on_ready(self):
         """
