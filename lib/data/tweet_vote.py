@@ -7,7 +7,7 @@ import math
 
 import discord
 
-from lib.settings.judge_standard import JudgeStandard
+from lib.data.judge_standard import JudgeStandard
 
 
 class TweetVote:

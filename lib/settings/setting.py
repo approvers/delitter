@@ -11,7 +11,7 @@ from typing import Dict
 from jsonschema import validate
 from typing.io import TextIO
 
-from lib.settings.judge_standard import JudgeStandard
+from lib.data.judge_standard import JudgeStandard
 
 
 class Setting:
