@@ -108,6 +108,9 @@ class ReactionEvent:
         :param message: 該当するメッセージ
         """
 
+        if self.vote_record.get(message.id) is None:
+            return
+
         # お気持ち表明
         await message.channel.send(
             "お前？！？！！？？！？？！？？！？！？！？！おい！？？！？！？！？！？！？！？？！！？！？！？\n"
