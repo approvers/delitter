@@ -13,8 +13,10 @@ if __name__ == '__main__':
         setting: Setting = create_setting_from_json(f)
 
     votes_record = TweetsVoteRecord()
+    command_register = CommandRegister(setting)
 
-    client = MainClient(setting, votes_record)
-    client.add_command(CreateVoteCommand)
-    client.add_command(DeleteVoteCommand)
+    command_register.add_command(CreateVoteCommand)
+    command_register.add_command(DeleteVoteCommand)
+
+    client = MainClient(setting, votes_record, command_register)
     client.launch()

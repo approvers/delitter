@@ -22,16 +22,17 @@ class MainClient(discord.Client):
     DiscordのBot。
     """
 
-    def __init__(self, setting: Setting, vote_record: TweetsVoteRecord):
+    def __init__(self, setting: Setting, vote_record: TweetsVoteRecord, command_register: CommandRegister):
         """
         指定した設定でクライアントを初期化する。
         :param setting: Botに使用する設定。
         :param vote_record: ツイートの投票を記録するレコード。
+        :param command_register: 実行するコマンドが登録されたCommandRegister
         """
         super(MainClient, self).__init__()
         self.reaction_event_handler: Optional[ReactionEvent] = None
         self.activity_channel: Optional[discord.TextChannel] = None
-        self.command_register: CommandRegister = CommandRegister(setting)
+        self.command_register: CommandRegister = command_register
         self.setting: Setting = setting
         self.vote_record: TweetsVoteRecord = vote_record
 
