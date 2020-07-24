@@ -15,17 +15,20 @@ class TweetVote:
     ツイートの投票。
     """
 
-    def __init__(self,
-                 content: str,
-                 author: discord.User
-                 ):
+    def __init__(
+            self,
+            content: str,
+            author: discord.Member
+     ):
         """
         投票を初期化する。
         :param content: ツイートする内容。
-        :param author: 誰が投票を作成したか。
+        :param author: 投票を作成した人。
         """
         self.content = content
-        self.author = author
+        self.author_id = author.id
+        self.author_nickname = author.display_name
+        self.author_name = author.name
         self.approves = 0
         self.denys = 0
 
@@ -56,5 +59,4 @@ class TweetVote:
         文字列izeする。
         :return: 文字列と化したTweetVote
         """
-        return "{}\nAuthored by: {}".format(self.content, self.author)
-
+        return "{}\nAuthored by: {}".format(self.content, self.author_name)

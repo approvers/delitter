@@ -8,6 +8,7 @@ from lib.data.tweet_vote import TweetVote
 def create_tweet_vote_embed(tweet_vote: TweetVote) -> discord.Embed:
     """
     TweetVoteをDiscordのメッセージに埋め込める形に変換する。
+    :param tweet_vote: 投票。
     :return: Embed。
     """
 
@@ -27,7 +28,7 @@ def create_tweet_vote_embed(tweet_vote: TweetVote) -> discord.Embed:
     )
     embed.add_field(
         name="ツイートしたい人",
-        value="{} (`{}`)".format(tweet_vote.author.display_name, tweet_vote.author.name),
+        value="{} (`{}`)".format(tweet_vote.author_nickname, tweet_vote.author_name),
         inline=False
     )
     embed.add_field(

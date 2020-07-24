@@ -47,7 +47,7 @@ class DeleteVoteCommand(AbstCommandBase, ABC):
             return
 
         # 投票が削除しようとしている人によって作成されたものかどうかを確認する
-        if record.author.id != message.author.id:
+        if record.author_id != message.author.id:
             await message.channel.send("人の投票消さないで♥")
             return
 

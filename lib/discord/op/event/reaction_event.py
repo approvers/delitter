@@ -57,6 +57,9 @@ class ReactionEvent:
         if reaction.emoji.id == self.setting.emoji_ids["deny"]:
             tweet_vote.denys += 1
 
+        # 反映する
+        self.vote_record.set(reaction.message.id, tweet_vote)
+
         # 更新した情報をEmbedに反映する
         embed = create_tweet_vote_embed(tweet_vote)
         embed.set_footer(text="ID: †{}†".format(reaction.message.id))
@@ -96,6 +99,9 @@ class ReactionEvent:
             tweet_vote.approves -= 1
         if reaction.emoji.id == self.setting.emoji_ids["deny"]:
             tweet_vote.denys -= 1
+
+        # 反映する
+        self.vote_record.set(reaction.message.id, tweet_vote)
 
         # Embedに反映する
         embed = create_tweet_vote_embed(tweet_vote)

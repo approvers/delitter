@@ -3,6 +3,7 @@ tweets_vote_record.py
 ------------------------
 投票を保存するクラスが入っている。
 """
+import copy
 import threading
 from typing import Dict, Optional
 
@@ -38,7 +39,18 @@ class TweetsVoteRecord:
         with self.thread_lock:
             if tweet_id not in self.pending_tweets_list:
                 return None
-            return self.pending_tweets_list[tweet_id]
+            return copy.deepcopy(self.pending_tweets_list[tweet_id])
+
+    def set(self, tweet_id: int, content: TweetVote):
+        """
+        投票を再登録する。
+        :param tweet_id: 再登録を行う投票のID。
+        :param content: 登録する投票
+        """
+        with self.thread_lock:
+            if tweet_id not in self.pending_tweets_list:
+                raise RuntimeError("Setしようとした投票が削除されています。(ID: {})".format(tweet_id))
+            self.pending_tweets_list[tweet_id] = content
 
     def delete(self, tweet_id: int):
         """
