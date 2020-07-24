@@ -3,6 +3,7 @@ reaction_event.py
 ------------------------
 リアクションに変化があったときの処理が入っている。
 """
+from enum import IntEnum
 
 import discord
 
@@ -12,11 +13,16 @@ from lib.logging.logger import log
 from lib.settings.setting import Setting
 
 
-class ReactionEvent:
+class ReactionEventRequirement(IntEnum):
+    """
+    そのイベントに対しての必要な反応は何かを表す。
+    """
+    RESPOND = 0
+    NO_RESPOND = 1
+    ROLLBACK = 2
 
-    RESPOND_REQUIRED = 0
-    NO_RESPOND_REQUIRED = 1
-    ROLLBACK_REQUIRED = 2
+
+class ReactionEvent:
 
     def __init__(self, setting: Setting, vote_record: TweetsVoteRecord):
         """
@@ -40,14 +46,15 @@ class ReactionEvent:
         response = self.validate_reaction(reaction, user)
 
         # 反応の必要がないか
-        if response == ReactionEvent.NO_RESPOND_REQUIRED:
+        if response == ReactionEventRequirement.NO_RESPOND:
             return False
 
         # ロールバックが必要か
-        if response == ReactionEvent.ROLLBACK_REQUIRED:
+        if response == ReactionEventRequirement.ROLLBACK:
             await reaction.message.remove_reaction(reaction.emoji, user)
             return False
 
+        # すでに投票していた場合は、前の投票を削除する
         # TweetsVoteRecordから該当するTweetVoteを持ってくる
         tweet_vote = self.vote_record.get(reaction.message.id)
 
@@ -78,11 +85,11 @@ class ReactionEvent:
         response = self.validate_reaction(reaction, user)
 
         # 反応の必要がないか
-        if response == ReactionEvent.NO_RESPOND_REQUIRED:
+        if response == ReactionEventRequirement.NO_RESPOND:
             return False
 
         # ロールバックが必要か
-        if response == ReactionEvent.ROLLBACK_REQUIRED:
+        if response == ReactionEventRequirement.ROLLBACK:
             # 削除されるとロールバックでないのでお気持ち表明して帰る
             await reaction.message.channel.send(
                 "お前！！！！！！！！！！！！！！！！なんてことしてくれたんだ！！！！！！！！！！！！！！！！！！！！！！\n"
@@ -134,31 +141,31 @@ class ReactionEvent:
         await message.edit(content="この投票は無効投票になりました。", embed=embed)
         await message.channel.send("投票が全てぶっちされたので、無効投票になってしまいました。お前のせいです。あーあ")
 
-    def validate_reaction(self, reaction: discord.Reaction, user: discord.Member) -> int:
+    def validate_reaction(self, reaction: discord.Reaction, user: discord.Member) -> ReactionEventRequirement:
         """
         リアクションが適切か確認し、ロールバックが必要かを判断する。
         :param reaction: バリデートするリアクション。
         :param user: リアクションしたユーザー。
-        :return: リアクションに対し反応が必要であればRESPOND_REQUIRED(0)、
-                 必要なければNO_RESPOND_REQUIRED(1)、
-                 ロールバックが必要であればROLLBACK_REQUIRED(2)が返る。
+        :return: リアクションに対し反応が必要であればRESPOND、
+                 必要なければNO_RESPOND、
+                 ロールバックが必要であればROLLBACKが返る。
                  正常な動作が行われた場合にゼロ、不正な動作が行われた際に非ゼロでもある。
         """
 
         # そのリアクションが関係あるメッセージに送られたものかを書く飲する
         if self.vote_record.get(reaction.message.id) is None:
-            return ReactionEvent.NO_RESPOND_REQUIRED
+            return ReactionEventRequirement.NO_RESPOND
 
         # そのリアクションが適切な絵文字かを確認する
         if reaction.emoji.id not in self.setting.emoji_ids.values():
             log("reaction", "不正なリアクションです。")
-            return ReactionEvent.NO_RESPOND_REQUIRED
+            return ReactionEventRequirement.NO_RESPOND
 
         # そのリアクションをした人が参政権を持っているかを確認する
         if self.setting.suffrage_role_id not in [x.id for x in user.roles]:
             log("reaction", "不正なユーザーからのリアクションです。ロールバックが必要です。")
-            return ReactionEvent.ROLLBACK_REQUIRED
+            return ReactionEventRequirement.ROLLBACK
 
         # 何も問題なければロールバックは不要
-        return ReactionEvent.RESPOND_REQUIRED
+        return ReactionEventRequirement.RESPOND
 
