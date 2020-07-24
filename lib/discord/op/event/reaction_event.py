@@ -139,9 +139,13 @@ class ReactionEvent:
         リアクションが適切か確認し、ロールバックが必要かを判断する。
         :param reaction: バリデートするリアクション。
         :param user: リアクションしたユーザー。
-        :return: ロールバックが必要な場合はTrue、必要ない場合はFalse。
+        :return: リアクションに対し反応が必要であればRESPOND_REQUIRED(0)、
+                 必要なければNO_RESPOND_REQUIRED(1)、
+                 ロールバックが必要であればROLLBACK_REQUIRED(2)が返る。
+                 正常な動作が行われた場合にゼロ、不正な動作が行われた際に非ゼロでもある。
         """
 
+        # そのリアクションが関係あるメッセージに送られたものかを書く飲する
         if self.vote_record.get(reaction.message.id) is None:
             return ReactionEvent.NO_RESPOND_REQUIRED
 
