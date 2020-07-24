@@ -21,13 +21,14 @@ class MainClient(discord.Client):
     DiscordのBot。
     """
 
-    def __init__(self,
-                 setting: Setting,
-                 vote_record: TweetsVoteRecord,
-                 command_register: CommandRegister,
-                 reaction_event_handler: ReactionEvent,
-                 approve_event_handlers: List[ApproveEvent]
-                 ):
+    def __init__(
+            self,
+            setting: Setting,
+            vote_record: TweetsVoteRecord,
+            command_register: CommandRegister,
+            reaction_event_handler: ReactionEvent,
+            approve_event_handlers: List[ApproveEvent]
+     ):
         """
         指定した設定でクライアントを初期化する。
         :param setting: Botに使用する設定。

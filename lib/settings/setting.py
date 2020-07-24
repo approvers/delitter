@@ -19,14 +19,15 @@ class Setting:
     Botの設定。
     """
 
-    def __init__(self,
-                 token: str,
-                 activity_channel_id: int,
-                 prefix: str,
-                 suffrage_role_id: int,
-                 emoji_ids: Dict[str, int],
-                 judge_standard: JudgeStandard,
-                 ):
+    def __init__(
+            self,
+            token: str,
+            activity_channel_id: int,
+            prefix: str,
+            suffrage_role_id: int,
+            emoji_ids: Dict[str, int],
+            judge_standard: JudgeStandard,
+    ):
         """
         MainClientクラスで使用する設定を保持するクラス。
         :param token: ログインに使用するトークン。
