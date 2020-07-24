@@ -51,9 +51,12 @@ class DeleteVoteCommand(AbstCommandBase, ABC):
             await message.channel.send("人の投票消さないで♥")
             return
 
-        # 該当する投票を削除する
+        # 該当する投票を無効投票にする
         self.vote_record.delete(tweet_id)
-        await (await message.channel.fetch_message(tweet_id)).delete()
+        vote_message: discord.Message = await message.channel.fetch_message(tweet_id)
+        embed: discord.Embed = vote_message.embeds[0]
+        embed.title = "†無効投票 (削除)†"
 
-        await message.channel.send("ID †`{}`† の投票を削除しました。".format(tweet_id))
+        await vote_message.edit(content="この投票は無効投票になりました。", embed=embed)
+        await message.channel.send("ID †`{}`† の投票は無効投票になりました。".format(tweet_id))
 
