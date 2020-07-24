@@ -60,7 +60,7 @@ class CommandRegister:
             return
 
         # コマンドを実行する
-        await self.commands[cmd_identity].parse_command(
+        await self.commands[cmd_identity].execute_command(
             msg.content[len(cmd_header) + 1:],
             msg
         )

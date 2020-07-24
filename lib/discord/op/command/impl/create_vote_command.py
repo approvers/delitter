@@ -40,7 +40,7 @@ class CreateVoteCommand(AbstCommandBase, ABC):
             description="ツイートしたい内容を登録し、投票を開始する"
         )
 
-    async def parse_command(self, text: str, message: discord.Message):
+    async def execute_command(self, text: str, message: discord.Message):
         log("command-create", "ツイートの作成コマンドを受信しました。")
 
         # ツイート内容に問題がないか確認する

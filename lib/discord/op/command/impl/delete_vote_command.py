@@ -30,7 +30,7 @@ class DeleteVoteCommand(AbstCommandBase, ABC):
             description="投票を削除します。投票を立てた人しか使えない安心安全の設計となっております。"
         )
 
-    async def parse_command(self, text: str, message: discord.Message):
+    async def execute_command(self, text: str, message: discord.Message):
 
         # 投票IDを取得する
         try:

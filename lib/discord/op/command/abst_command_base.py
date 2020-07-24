@@ -37,7 +37,7 @@ class AbstCommandBase(metaclass=ABCMeta):
         pass
 
     @abstractmethod
-    def parse_command(self, text: str, message: discord.Message):
+    def execute_command(self, text: str, message: discord.Message):
         """
         コマンドを実行する。
         :param text: 受信したメッセージからPrefixとコマンド識別文字列を除いた文字列。
