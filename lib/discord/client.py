@@ -132,12 +132,12 @@ class MainClient(discord.Client):
         :param reactions: 削除されたリアクションの情報。
         :return:
         """
-        if not self.check_response_required(message.channel, message.user):
+        if not self.check_response_required(message.channel, None):
             return
 
         await self.reaction_event_handler.on_reaction_clear(message)
 
-    def check_response_required(self, channel: discord.TextChannel, user: Union[discord.User, discord.Member]):
+    def check_response_required(self, channel: discord.TextChannel, user: Optional[Union[discord.User, discord.Member]]):
         """
         イベントに対して反応するべきかを確認する。
         事前に指定されたチャンネルで発生したか、または自分が起こしたイベントだった場合はFalseを返す。
@@ -148,7 +148,7 @@ class MainClient(discord.Client):
         if channel.id != self.setting.activity_channel_id:
             return False
 
-        if user.id == self.user.id:
+        if user is not None and user.id == self.user.id:
             return False
 
         return True
