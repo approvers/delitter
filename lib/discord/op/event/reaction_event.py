@@ -115,13 +115,15 @@ class ReactionEvent:
             "今すぐツイッターでメス堕ちしろ！！！！！！！！！！！！！！！おい！！！！！！！！！！！！！！！！！！！！！！！！！"
         )
 
-        log("react-clr", "ID: {}に関連付けされた投票が全て削除されました。該当する投票を登録から削除します。")
+        log("react-clr", "ID: {}に関連付けされた投票が全て削除されました。該当する投票を登録から削除します。".format(message.id))
 
         # 整合性がvoidに還ったので消す
         self.vote_record.delete(message.id)
-        await message.delete()
+        embed: discord.Embed = message.embeds[0]
+        embed.title = "†無効投票 (リアクションぶっち)†"
 
-        await message.channel.send("投票が全てぶっちされたので、該当するメッセージを削除しました。号泣しています。")
+        await message.edit(content="この投票は無効投票になりました。", embed=embed)
+        await message.channel.send("投票が全てぶっちされたので、無効投票になってしまいました。お前のせいです。あーあ")
 
     def validate_reaction(self, reaction: discord.Reaction, user: discord.Member) -> int:
         """
