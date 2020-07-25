@@ -1,3 +1,8 @@
+"""
+command_register.py
+------------------------
+コマンドを管理するクラスが入っている。
+"""
 from typing import Type, List, Dict
 
 import discord

@@ -1,3 +1,8 @@
+"""
+tweeter.py
+------------------------
+ツイッターでツイートをするためのクラスが入っている。
+"""
 from twitter import *
 
 from lib.logging.logger import log

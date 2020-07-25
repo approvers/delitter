@@ -1,7 +1,7 @@
 """
 discord.py
 ------------------------
-設定周りを司る。
+DiscordのBot周りの設定を司る。
 """
 
 import json

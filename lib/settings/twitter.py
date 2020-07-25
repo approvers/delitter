@@ -1,7 +1,7 @@
 """
 twitter.py
 ------------------------
-設定周りを司る。
+TwitterAPIの認証に必要な設定を司る。
 """
 
 import json

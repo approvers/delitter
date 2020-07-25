@@ -1,3 +1,8 @@
+"""
+tweet_vote_utils.py
+------------------------
+TweetVote関係で便利なユーティリティが書いっている。
+"""
 import random
 
 import discord
