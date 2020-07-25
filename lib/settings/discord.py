@@ -50,7 +50,7 @@ class DiscordSetting:
         self.judge_standard = judge_standard
 
 
-def create_discord_setting_from_json(file: TextIO) -> DiscordSetting:
+def create(file: TextIO) -> DiscordSetting:
     """
     Jsonファイルから設定をパースしてDiscordSettingを生成する
     :param file: Jsonファイルを参照しているIO。

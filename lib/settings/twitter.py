@@ -35,7 +35,7 @@ class TwitterSetting:
         self.access_secret_token = access_token_secret
 
 
-def create_twitter_setting_from_json(file: TextIO) -> TwitterSetting:
+def create(file: TextIO) -> TwitterSetting:
     """
     Jsonファイルから設定をパースしてTwitterSettingを生成する
     :param file: Jsonファイルを参照しているIO。
