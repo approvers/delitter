@@ -112,7 +112,9 @@ class MainClient(discord.Client):
         approved = await self.reaction_event_handler.on_reaction_add(reaction, user)
         if approved:
             for event_handler in self.approve_event_handlers:
-                await event_handler.on_approved(reaction.message, self.vote_record)
+                task = event_handler.on_approved(reaction.message, self.vote_record)
+                if task is not None:
+                    await task
 
     async def on_reaction_remove(self, reaction: discord.Reaction, user: discord.Member):
         """
