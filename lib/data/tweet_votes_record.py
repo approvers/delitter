@@ -59,4 +59,3 @@ class TweetsVoteRecord:
         """
         with self.thread_lock:
             del self.pending_tweets_list[tweet_id]
-

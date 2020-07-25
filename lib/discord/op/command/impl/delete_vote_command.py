@@ -59,4 +59,3 @@ class DeleteVoteCommand(AbstCommandBase, ABC):
 
         await vote_message.edit(content="この投票は無効投票になりました。", embed=embed)
         await message.channel.send("ID †`{}`† の投票は無効投票になりました。".format(tweet_id))
-

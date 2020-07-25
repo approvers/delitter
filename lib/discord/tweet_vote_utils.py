@@ -43,4 +43,3 @@ def create_tweet_vote_embed(tweet_vote: TweetVote) -> discord.Embed:
 
     # 返す。
     return embed
-

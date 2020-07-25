@@ -168,4 +168,3 @@ class ReactionEvent:
 
         # 何も問題なければロールバックは不要
         return ReactionEventRequirement.RESPOND
-
