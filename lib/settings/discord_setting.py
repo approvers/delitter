@@ -1,5 +1,5 @@
 """
-setting.py
+discord_setting.py
 ------------------------
 設定周りを司る。
 """
@@ -52,9 +52,9 @@ class DiscordSetting:
 
 def create_setting_from_json(file: TextIO) -> DiscordSetting:
     """
-    Jsonファイルから設定をパースしてSettingを生成する
+    Jsonファイルから設定をパースしてDiscordSettingを生成する
     :param file: Jsonファイルを参照しているIO。
-    :return: 生成されたSetting
+    :return: 生成されたDiscordSetting
     """
 
     with open("lib/settings/discord_scheme.json", mode="r") as f:
