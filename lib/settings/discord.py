@@ -1,12 +1,12 @@
 """
-discord_setting.py
+discord.py
 ------------------------
-設定周りを司る。
+DiscordのBot周りの設定を司る。
 """
 
 import json
 import os
-from typing import Dict
+from typing import Dict, Union
 
 from jsonschema import validate
 from typing.io import TextIO
@@ -50,17 +50,19 @@ class DiscordSetting:
         self.judge_standard = judge_standard
 
 
-def create_discord_setting_from_json(file: TextIO) -> DiscordSetting:
+def create(file: TextIO) -> DiscordSetting:
     """
     Jsonファイルから設定をパースしてDiscordSettingを生成する
     :param file: Jsonファイルを参照しているIO。
     :return: 生成されたDiscordSetting
     """
+    json_type = Dict[str, Union[None, str, int]]
+    json_type = Dict[str, Union[json_type, None, str, int]]
 
-    with open("lib/settings/discord_scheme.json", mode="r") as f:
-        scheme_json: dict = json.load(f)
+    with open("static/scheme/discord_scheme.json") as f:
+        scheme_json: json_type = json.load(f)
 
-    raw_json: dict = json.load(file)
+    raw_json: json_type = json.load(file)
     validate(raw_json, scheme_json)
 
     raw_json.setdefault("token", None)

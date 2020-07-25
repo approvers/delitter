@@ -10,7 +10,7 @@ import discord
 from lib.data.tweet_votes_record import TweetsVoteRecord
 from lib.discord.op.command.abst_command_base import AbstCommandBase
 from lib.discord.op.command.command_property import CommandProperty
-from lib.settings.discord_setting import DiscordSetting
+from lib.settings.discord import DiscordSetting
 
 
 class DeleteVoteCommand(AbstCommandBase, ABC):
@@ -59,4 +59,3 @@ class DeleteVoteCommand(AbstCommandBase, ABC):
 
         await vote_message.edit(content="この投票は無効投票になりました。", embed=embed)
         await message.channel.send("ID †`{}`† の投票は無効投票になりました。".format(tweet_id))
-

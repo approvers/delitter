@@ -11,6 +11,9 @@ from lib.data.tweet_votes_record import TweetsVoteRecord
 
 
 class ApproveEvent(metaclass=ABCMeta):
+    """
+    可決時に発火されるイベントの抽象クラス。
+    """
 
     @abstractmethod
     async def on_approved(self, message: discord.Message, vote_record: TweetsVoteRecord):

@@ -1,10 +1,11 @@
 """
-twitter_setting.py
+twitter.py
 ------------------------
-設定周りを司る。
+TwitterAPIの認証に必要な設定を司る。
 """
 
 import json
+from typing import Dict, Union
 
 from jsonschema import validate
 from typing.io import TextIO
@@ -35,17 +36,19 @@ class TwitterSetting:
         self.access_secret_token = access_token_secret
 
 
-def create_twitter_setting_from_json(file: TextIO) -> TwitterSetting:
+def create(file: TextIO) -> TwitterSetting:
     """
     Jsonファイルから設定をパースしてTwitterSettingを生成する
     :param file: Jsonファイルを参照しているIO。
     :return: 生成されたTwitterSetting
     """
+    json_type = Dict[str, Union[None, str, int]]
+    json_type = Dict[str, Union[json_type, None, str, int]]
 
-    with open("lib/settings/twitter_scheme.json", mode="r") as f:
-        scheme_json: dict = json.load(f)
+    with open("static/scheme/twitter_scheme.json") as f:
+        scheme_json: json_type = json.load(f)
 
-    raw_json: dict = json.load(file)
+    raw_json: json_type = json.load(file)
     validate(raw_json, scheme_json)
 
     raw_json.setdefault("token", None)

@@ -1,3 +1,8 @@
+"""
+approve_discord_handler.py
+------------------------
+可決されたときのDiscord周りの処理を司る。
+"""
 from abc import ABC
 
 import discord

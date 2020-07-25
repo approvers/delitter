@@ -9,7 +9,7 @@ import discord
 
 from lib.data.tweet_votes_record import TweetsVoteRecord
 from lib.discord.op.command.command_property import CommandProperty
-from lib.settings.discord_setting import DiscordSetting
+from lib.settings.discord import DiscordSetting
 
 
 class AbstCommandBase(metaclass=ABCMeta):

@@ -13,7 +13,7 @@ from lib.discord.op.command.command_register import CommandRegister
 from lib.discord.op.event.approve_event import ApproveEvent
 from lib.discord.op.event.reaction_event import ReactionEvent
 from lib.logging.logger import log
-from lib.settings.discord_setting import DiscordSetting
+from lib.settings.discord import DiscordSetting
 
 
 class MainClient(discord.Client):
@@ -83,7 +83,7 @@ class MainClient(discord.Client):
         if not self.check_response_required(message.channel, message.author):
             return
 
-        if message.author.bot and not message.content.startswith(self.setting.prefix):
+        if message.author.bot or not message.content.startswith(self.setting.prefix):
             return
 
         log("client-msg", "処理対象のメッセージを受信しました:\n{}".format(message.content))
@@ -112,9 +112,7 @@ class MainClient(discord.Client):
         approved = await self.reaction_event_handler.on_reaction_add(reaction, user)
         if approved:
             for event_handler in self.approve_event_handlers:
-                task = event_handler.on_approved(reaction.message, self.vote_record)
-                if task is not None:
-                    await task
+                await event_handler.on_approved(reaction.message, self.vote_record)
 
     async def on_reaction_remove(self, reaction: discord.Reaction, user: discord.Member):
         """
