@@ -42,7 +42,7 @@ def create_twitter_setting_from_json(file: TextIO) -> TwitterSetting:
     :return: 生成されたTwitterSetting
     """
 
-    with open("static/scheme/twitter_scheme.json", mode="r") as f:
+    with open("static/scheme/twitter_scheme.json") as f:
         scheme_json: dict = json.load(f)
 
     raw_json: dict = json.load(file)

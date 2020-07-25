@@ -57,7 +57,7 @@ def create_discord_setting_from_json(file: TextIO) -> DiscordSetting:
     :return: 生成されたDiscordSetting
     """
 
-    with open("static/scheme/discord_scheme.json", mode="r") as f:
+    with open("static/scheme/discord_scheme.json") as f:
         scheme_json: dict = json.load(f)
 
     raw_json: dict = json.load(file)

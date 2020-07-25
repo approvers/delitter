@@ -16,10 +16,10 @@ from lib.settings.twitter import TwitterSetting, create_twitter_setting_from_jso
 from lib.twitter.tweeter import Tweeter
 
 if __name__ == '__main__':
-    with open("settings/discord.json", mode="r") as f:
+    with open("settings/discord.json") as f:
         discord_setting: DiscordSetting = create_discord_setting_from_json(f)
 
-    with open("settings/twitter-api.json", mode="r") as f:
+    with open("settings/twitter-api.json") as f:
         twitter_setting: TwitterSetting = create_twitter_setting_from_json(f)
 
     votes_record = TweetsVoteRecord()
