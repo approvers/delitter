@@ -1,6 +1,7 @@
 # delitter/setings
-ここに以下の書式で設定ファイル「`settings.json`」を設置する必要があります。
+ここに以下の書式で設定ファイル「`discord.json`」と「`twitter-api.json`」を設置する必要があります。
 
+## `discord.json`
 ```json
 {
   "activity_channel_id": (このBotが活動するチャンネルID),
@@ -15,5 +16,15 @@
     "total": (可決に必要な総票数),
     "rate": (可決に必要な可決率)
   }
+}
+```
+
+## `twitter-api.json`
+```json
+{
+  "consumer_api_key": "Consumer Api Key",
+  "consumer_api_secret_key": "Consumer Api Secret Key",
+  "access_token": "Access Token",
+  "access_token_secret": "Access Token Secret"            
 }
 ```

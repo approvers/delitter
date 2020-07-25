@@ -42,6 +42,6 @@ Dagger_TweetManagementSystem_Daggerが止まってしまったので開発して
   - [X] `reaction`: リアクションを用いて可否を確認することができる。
   - [X] `final-judge`: ツイートをするかどうかの最終判断ができる。
 - [ ] `tweet-base`: Twitterにツイートすることができる。
-  - [ ] `twitter-api`: 任意のツイートをすることができる。
+  - [X] `twitter-api`: 任意のツイートをすることができる。
   - [ ] `tweet`: 可決されたツイートを送信することができる。
   - [ ] `autodelete-vote`: ツイート後に自動で投票を削除することができる。
