@@ -13,7 +13,7 @@ from lib.discord.op.command.command_register import CommandRegister
 from lib.discord.op.event.approve_event import ApproveEvent
 from lib.discord.op.event.reaction_event import ReactionEvent
 from lib.logging.logger import log
-from lib.settings.discord_setting import DiscordSetting
+from lib.settings.discord import DiscordSetting
 
 
 class MainClient(discord.Client):

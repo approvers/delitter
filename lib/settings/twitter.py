@@ -1,5 +1,5 @@
 """
-twitter_setting.py
+twitter.py
 ------------------------
 設定周りを司る。
 """

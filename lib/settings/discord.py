@@ -1,5 +1,5 @@
 """
-discord_setting.py
+discord.py
 ------------------------
 設定周りを司る。
 """

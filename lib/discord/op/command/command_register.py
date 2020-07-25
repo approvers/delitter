@@ -5,7 +5,7 @@ import discord
 from lib.data.tweet_votes_record import TweetsVoteRecord
 from lib.discord.op.command.abst_command_base import AbstCommandBase
 from lib.logging.logger import log
-from lib.settings.discord_setting import DiscordSetting
+from lib.settings.discord import DiscordSetting
 
 
 class CommandRegister:

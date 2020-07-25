@@ -16,7 +16,7 @@ from lib.discord.op.command.abst_command_base import AbstCommandBase
 from lib.discord.op.command.command_property import CommandProperty
 from lib.discord.tweet_vote_utils import create_tweet_vote_embed
 from lib.logging.logger import log
-from lib.settings.discord_setting import DiscordSetting
+from lib.settings.discord import DiscordSetting
 
 
 class CreateVoteCommand(AbstCommandBase, ABC):

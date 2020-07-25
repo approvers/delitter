@@ -1,7 +1,7 @@
 from twitter import *
 
 from lib.logging.logger import log
-from lib.settings.twitter_setting import TwitterSetting
+from lib.settings.twitter import TwitterSetting
 
 
 class Tweeter:
