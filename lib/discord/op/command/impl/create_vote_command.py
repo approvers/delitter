@@ -16,7 +16,7 @@ from lib.discord.op.command.abst_command_base import AbstCommandBase
 from lib.discord.op.command.command_property import CommandProperty
 from lib.discord.tweet_vote_utils import create_tweet_vote_embed
 from lib.logging.logger import log
-from lib.settings.setting import Setting
+from lib.settings.discord_setting import DiscordSetting
 
 
 class CreateVoteCommand(AbstCommandBase, ABC):
@@ -25,7 +25,7 @@ class CreateVoteCommand(AbstCommandBase, ABC):
     """
     SPECIAL_CHARACTER_REGEX: re.Pattern = re.compile("<[@#:].*?>")
 
-    def __init__(self, guild: discord.Guild, setting: Setting, vote_record: TweetsVoteRecord):
+    def __init__(self, guild: discord.Guild, setting: DiscordSetting, vote_record: TweetsVoteRecord):
         super().__init__(guild, setting, vote_record)
         self.suffrage_mention = guild.get_role(setting.suffrage_role_id).mention
         self.guild = guild

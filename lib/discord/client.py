@@ -13,7 +13,7 @@ from lib.discord.op.command.command_register import CommandRegister
 from lib.discord.op.event.approve_event import ApproveEvent
 from lib.discord.op.event.reaction_event import ReactionEvent
 from lib.logging.logger import log
-from lib.settings.setting import Setting
+from lib.settings.discord_setting import DiscordSetting
 
 
 class MainClient(discord.Client):
@@ -23,7 +23,7 @@ class MainClient(discord.Client):
 
     def __init__(
             self,
-            setting: Setting,
+            setting: DiscordSetting,
             vote_record: TweetsVoteRecord,
             command_register: CommandRegister,
             reaction_event_handler: ReactionEvent,
@@ -38,7 +38,7 @@ class MainClient(discord.Client):
         :param approve_event_handlers: 投票が可決されたときのイベントハンドラ。
         """
         super(MainClient, self).__init__()
-        self.setting: Setting = setting
+        self.setting: DiscordSetting = setting
         self.vote_record: TweetsVoteRecord = vote_record
         self.command_register: CommandRegister = command_register
         self.reaction_event_handler: ReactionEvent = reaction_event_handler
