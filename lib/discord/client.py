@@ -83,7 +83,7 @@ class MainClient(discord.Client):
         if not self.check_response_required(message.channel, message.author):
             return
 
-        if message.author.bot and not message.content.startswith(self.setting.prefix):
+        if message.author.bot or not message.content.startswith(self.setting.prefix):
             return
 
         log("client-msg", "処理対象のメッセージを受信しました:\n{}".format(message.content))
