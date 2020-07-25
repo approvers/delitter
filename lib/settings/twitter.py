@@ -5,6 +5,7 @@ TwitterAPIの認証に必要な設定を司る。
 """
 
 import json
+from typing import Dict, Union
 
 from jsonschema import validate
 from typing.io import TextIO
@@ -41,11 +42,13 @@ def create(file: TextIO) -> TwitterSetting:
     :param file: Jsonファイルを参照しているIO。
     :return: 生成されたTwitterSetting
     """
+    json_type = Dict[str, Union[None, str, int]]
+    json_type = Dict[str, Union[json_type, None, str, int]]
 
     with open("static/scheme/twitter_scheme.json") as f:
-        scheme_json: dict = json.load(f)
+        scheme_json: json_type = json.load(f)
 
-    raw_json: dict = json.load(file)
+    raw_json: json_type = json.load(file)
     validate(raw_json, scheme_json)
 
     raw_json.setdefault("token", None)
