@@ -1,5 +1,3 @@
-from abc import ABC
-
 import discord
 
 from lib.data.tweet_votes_record import TweetsVoteRecord
@@ -7,7 +5,7 @@ from lib.discord.op.event.approve_event import ApproveEvent
 from lib.twitter.tweeter import Tweeter
 
 
-class ApproveTwitterHandler(ApproveEvent, ABC):
+class ApproveTwitterHandler(ApproveEvent):
 
     def __init__(self, tweeter: Tweeter):
         self.tweeter = tweeter
