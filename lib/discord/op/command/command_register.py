@@ -70,4 +70,4 @@ class CommandRegister:
         ヘルプメッセージを取得する。
         :return: ヘルプメッセージ。
         """
-        return sum(map(str, self.commands.values()), "***†Delitter†***\nツイートを審議するためのBotです。")
+        return "***†Delitter†***\nツイートを審議するためのBotです。" + "".join(map(str, self.commands.values()))
