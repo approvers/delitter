@@ -1,3 +1,8 @@
+"""
+tweet_vote_utils.py
+------------------------
+TweetVote関係で便利なユーティリティが書いっている。
+"""
 import random
 
 import discord
@@ -43,4 +48,3 @@ def create_tweet_vote_embed(tweet_vote: TweetVote) -> discord.Embed:
 
     # 返す。
     return embed
-

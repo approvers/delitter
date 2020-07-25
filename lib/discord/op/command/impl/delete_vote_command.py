@@ -10,7 +10,7 @@ import discord
 from lib.data.tweet_votes_record import TweetsVoteRecord
 from lib.discord.op.command.abst_command_base import AbstCommandBase
 from lib.discord.op.command.command_property import CommandProperty
-from lib.settings.setting import Setting
+from lib.settings.discord import DiscordSetting
 
 
 class DeleteVoteCommand(AbstCommandBase, ABC):
@@ -18,7 +18,7 @@ class DeleteVoteCommand(AbstCommandBase, ABC):
     投票を削除するためのコマンド。
     """
 
-    def __init__(self, guild: discord.Guild, setting: Setting, vote_record: TweetsVoteRecord):
+    def __init__(self, guild: discord.Guild, setting: DiscordSetting, vote_record: TweetsVoteRecord):
         super().__init__(guild, setting, vote_record)
         self.vote_record = vote_record
 
@@ -59,4 +59,3 @@ class DeleteVoteCommand(AbstCommandBase, ABC):
 
         await vote_message.edit(content="この投票は無効投票になりました。", embed=embed)
         await message.channel.send("ID †`{}`† の投票は無効投票になりました。".format(tweet_id))
-
