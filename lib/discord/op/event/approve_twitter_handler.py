@@ -12,5 +12,5 @@ class ApproveTwitterHandler(ApproveEvent, ABC):
     def __init__(self, tweeter: Tweeter):
         self.tweeter = tweeter
 
-    def on_approved(self, message: discord.Message, vote_record: TweetsVoteRecord):
+    async def on_approved(self, message: discord.Message, vote_record: TweetsVoteRecord):
         self.tweeter.tweet(vote_record.get(message.id).content)
