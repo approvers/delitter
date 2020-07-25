@@ -5,7 +5,7 @@ import discord
 from lib.data.tweet_votes_record import TweetsVoteRecord
 from lib.discord.op.command.abst_command_base import AbstCommandBase
 from lib.logging.logger import log
-from lib.settings.setting import Setting
+from lib.settings.discord_setting import DiscordSetting
 
 
 class CommandRegister:
@@ -13,7 +13,7 @@ class CommandRegister:
     コマンドを追加/初期化・実行するクラス。
     """
 
-    def __init__(self, setting: Setting):
+    def __init__(self, setting: DiscordSetting):
         """
         初期化する。
         :param setting: Botの設定

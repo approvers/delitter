@@ -14,7 +14,7 @@ from typing.io import TextIO
 from lib.data.judge_standard import JudgeStandard
 
 
-class Setting:
+class DiscordSetting:
     """
     Botの設定。
     """
@@ -50,14 +50,14 @@ class Setting:
         self.judge_standard = judge_standard
 
 
-def create_setting_from_json(file: TextIO) -> Setting:
+def create_setting_from_json(file: TextIO) -> DiscordSetting:
     """
     Jsonファイルから設定をパースしてSettingを生成する
     :param file: Jsonファイルを参照しているIO。
     :return: 生成されたSetting
     """
 
-    with open("lib/settings/settings_scheme.json", mode="r") as f:
+    with open("lib/settings/discord_scheme.json", mode="r") as f:
         scheme_json: dict = json.load(f)
 
     raw_json: dict = json.load(file)
@@ -65,7 +65,7 @@ def create_setting_from_json(file: TextIO) -> Setting:
 
     raw_json.setdefault("token", None)
 
-    return Setting(
+    return DiscordSetting(
         raw_json["token"],
         raw_json["activity_channel_id"],
         raw_json["prefix"],

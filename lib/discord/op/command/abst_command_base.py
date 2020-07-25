@@ -9,7 +9,7 @@ import discord
 
 from lib.data.tweet_votes_record import TweetsVoteRecord
 from lib.discord.op.command.command_property import CommandProperty
-from lib.settings.setting import Setting
+from lib.settings.discord_setting import DiscordSetting
 
 
 class AbstCommandBase(metaclass=ABCMeta):
@@ -18,7 +18,7 @@ class AbstCommandBase(metaclass=ABCMeta):
     """
 
     @abstractmethod
-    def __init__(self, guild: discord.Guild, setting: Setting, vote_record: TweetsVoteRecord):
+    def __init__(self, guild: discord.Guild, setting: DiscordSetting, vote_record: TweetsVoteRecord):
         """
         インスタンスを初期化する。
         初期化はBotのログイン直後に行われる。
