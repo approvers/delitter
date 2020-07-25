@@ -4,7 +4,7 @@ from lib.logging.logger import log
 from lib.settings.twitter_setting import TwitterSetting
 
 
-class TwitterHelper:
+class Tweeter:
 
     def __init__(self, setting: TwitterSetting):
         self.twitter = Twitter(

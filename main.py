@@ -12,7 +12,7 @@ from lib.discord.op.event.approve_discord_handler import ApproveDiscordHandler
 from lib.discord.op.event.reaction_event import ReactionEvent
 from lib.settings.discord_setting import DiscordSetting, create_discord_setting_from_json
 from lib.settings.twitter_setting import TwitterSetting, create_twitter_setting_from_json
-from lib.twitter.TwitterHelper import TwitterHelper
+from lib.twitter.tweeter import Tweeter
 
 
 if __name__ == '__main__':
