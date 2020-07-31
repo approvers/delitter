@@ -3,6 +3,8 @@ tweet_vote.py
 ------------------------
 ツイートの投票を司るクラスが入っている。
 """
+import math
+
 import discord
 
 
@@ -29,6 +31,17 @@ class TweetVote:
         self.required_approve_count = required_approve_count
         self.approves = 0
         self.denys = 0
+
+    def get_approval_rate(self) -> int:
+        """
+        投票の可決率を計算する。
+        総票数がゼロの場合は0とする。
+        :return: 投票の可決率。
+        """
+        if (self.approves + self.denys) == 0:
+            return 0
+
+        return math.floor(self.approves / (self.approves + self.denys) * 100)
 
     def __str__(self) -> str:
         """
