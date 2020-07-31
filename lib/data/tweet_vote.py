@@ -44,6 +44,13 @@ class TweetVote:
 
         return math.floor(self.approves / (self.approves + self.denys) * 100)
 
+    def is_approved(self) -> bool:
+        """
+        可決状態にあるかを確認する。
+        :return: 可決されたどうか。可決された場合はTrueを返す。
+        """
+        return self.approves >= self.required_approve_count
+
     def __str__(self) -> str:
         """
         文字列izeする。
