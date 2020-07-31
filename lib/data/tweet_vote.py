@@ -23,6 +23,7 @@ class TweetVote:
         投票を初期化する。
         :param content: ツイートする内容。
         :param author: 投票を作成した人。
+        :param required_approve_count: 可決に必要な票数。
         """
         self.content = content
         self.author_id = author.id
