@@ -72,7 +72,7 @@ class ReactionEvent:
         embed.set_footer(text="ID: †{}†".format(reaction.message.id))
         await reaction.message.edit(embed=embed)
 
-        return tweet_vote.is_approved(self.setting.judge_standard)
+        return tweet_vote.approves >= tweet_vote.required_approve_count
 
     async def on_reaction_remove(self, reaction: discord.Reaction, user: discord.Member):
         """

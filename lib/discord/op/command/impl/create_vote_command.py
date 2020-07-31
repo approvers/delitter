@@ -27,9 +27,8 @@ class CreateVoteCommand(AbstCommandBase, ABC):
 
     def __init__(self, guild: discord.Guild, setting: DiscordSetting, vote_record: TweetsVoteRecord):
         super().__init__(guild, setting, vote_record)
-        self.suffrage_mention = guild.get_role(setting.suffrage_role_id).mention
         self.guild = guild
-        self.emoji_ids = setting.emoji_ids
+        self.setting = setting
         self.vote_record = vote_record
 
     def get_command_info(self) -> CommandProperty:
@@ -49,8 +48,12 @@ class CreateVoteCommand(AbstCommandBase, ABC):
             await message.channel.send(error_message)
             return
 
+        # 現在のロールの状態を取得する
+        suffrage_role: discord.Role = self.guild.get_role(self.setting.suffrage_role_id)
+
         # ツイート内容のデータを生成する
-        tweet_content = TweetVote(text, message.author)
+        suffrage_count = suffrage_role.members * (self.setting.approve_rate / 100)
+        tweet_content = TweetVote(text, suffrage_count, message.author)
 
         # 投票用のEmbedを作成する
         embed = create_tweet_vote_embed(tweet_content)
