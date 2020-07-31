@@ -37,6 +37,11 @@ def create_tweet_vote_embed(tweet_vote: TweetVote) -> discord.Embed:
         inline=False
     )
     embed.add_field(
+        name="可決に必要な可決票数",
+        value="{}票".format(tweet_vote.required_approve_count),
+        inline=False
+    )
+    embed.add_field(
         name="投票状況",
         value=":thumbsup: {}/{} :thumbsdown: ({}%)".format(
             tweet_vote.approves,
