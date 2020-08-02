@@ -48,10 +48,10 @@ class DiscordSetting:
         self.approve_rate = approve_rate
 
 
-def create(file: TextIO) -> DiscordSetting:
+def create(json_text: str) -> DiscordSetting:
     """
     Jsonファイルから設定をパースしてDiscordSettingを生成する
-    :param file: Jsonファイルを参照しているIO。
+    :param json_text: Jsonで記述された設定。
     :return: 生成されたDiscordSetting
     """
     json_type = Dict[str, Union[None, str, int]]
@@ -60,7 +60,7 @@ def create(file: TextIO) -> DiscordSetting:
     with open("static/scheme/discord_scheme.json") as f:
         scheme_json: json_type = json.load(f)
 
-    raw_json: json_type = json.load(file)
+    raw_json: json_type = json.loads(json_text)
     validate(raw_json, scheme_json)
 
     raw_json.setdefault("token", None)
