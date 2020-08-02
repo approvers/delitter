@@ -12,10 +12,7 @@
     "deny": "否決表の絵文字ID"
   },
   "suffrage_role_id": (参政権のロールID),
-  "judge_standard": {
-    "total": (可決に必要な総票数),
-    "rate": (可決に必要な可決率)
-  }
+  "approve_rate": (可決に必要な、参政権を持っている人に対する可決票の割合)
 }
 ```
 

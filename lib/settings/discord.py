@@ -11,8 +11,6 @@ from typing import Dict, Union
 from jsonschema import validate
 from typing.io import TextIO
 
-from lib.data.judge_standard import JudgeStandard
-
 
 class DiscordSetting:
     """
@@ -26,7 +24,7 @@ class DiscordSetting:
             prefix: str,
             suffrage_role_id: int,
             emoji_ids: Dict[str, int],
-            judge_standard: JudgeStandard,
+            approve_rate: int
     ):
         """
         MainClientクラスで使用する設定を保持するクラス。
@@ -36,7 +34,7 @@ class DiscordSetting:
         :param prefix: Botのプレフィックス。
         :param suffrage_role_id: 参政権ロールのID。
         :param emoji_ids: 投票に使用する絵文字のID。
-        :param judge_standard: 可決となるための基準。
+        :param approve_rate: 可決に必要な、総有権者数に対する可決率。
         """
 
         if token is None and "DISCORD_TOKEN" not in os.environ:
@@ -47,7 +45,7 @@ class DiscordSetting:
         self.prefix = prefix
         self.suffrage_role_id = suffrage_role_id
         self.emoji_ids = emoji_ids
-        self.judge_standard = judge_standard
+        self.approve_rate = approve_rate
 
 
 def create(file: TextIO) -> DiscordSetting:
@@ -73,8 +71,5 @@ def create(file: TextIO) -> DiscordSetting:
         raw_json["prefix"],
         raw_json["suffrage_role_id"],
         raw_json["emoji_ids"],
-        JudgeStandard(
-            raw_json["judge_standard"]["total"],
-            raw_json["judge_standard"]["rate"]
-        )
+        raw_json["approve_rate"]
     )

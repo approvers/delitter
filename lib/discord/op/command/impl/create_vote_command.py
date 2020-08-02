@@ -27,9 +27,8 @@ class CreateVoteCommand(AbstCommandBase, ABC):
 
     def __init__(self, guild: discord.Guild, setting: DiscordSetting, vote_record: TweetsVoteRecord):
         super().__init__(guild, setting, vote_record)
-        self.suffrage_mention = guild.get_role(setting.suffrage_role_id).mention
         self.guild = guild
-        self.emoji_ids = setting.emoji_ids
+        self.setting = setting
         self.vote_record = vote_record
 
     def get_command_info(self) -> CommandProperty:
@@ -49,8 +48,12 @@ class CreateVoteCommand(AbstCommandBase, ABC):
             await message.channel.send(error_message)
             return
 
+        # 現在のロールの状態を取得する
+        suffrage_role: discord.Role = self.guild.get_role(self.setting.suffrage_role_id)
+
         # ツイート内容のデータを生成する
-        tweet_content = TweetVote(text, message.author)
+        suffrage_count = ceil(len(suffrage_role.members) * (self.setting.approve_rate / 100))
+        tweet_content = TweetVote(text, message.author, suffrage_count)
 
         # 投票用のEmbedを作成する
         embed = create_tweet_vote_embed(tweet_content)
@@ -63,11 +66,11 @@ class CreateVoteCommand(AbstCommandBase, ABC):
         await sent_message.edit(content="リアクションを設定しています…", embed=new_embed)
 
         # リアクションを設定する
-        await sent_message.add_reaction(await self.guild.fetch_emoji(self.emoji_ids["approve"]))
-        await sent_message.add_reaction(await self.guild.fetch_emoji(self.emoji_ids["deny"]))
+        await sent_message.add_reaction(await self.guild.fetch_emoji(self.setting.emoji_ids["approve"]))
+        await sent_message.add_reaction(await self.guild.fetch_emoji(self.setting.emoji_ids["deny"]))
 
         # ステータスメッセージを設定する
-        await sent_message.edit(content="{}の皆さん、投票のお時間ですわよ！".format(self.suffrage_mention), embed=new_embed)
+        await sent_message.edit(content="{}の皆さん、投票のお時間ですわよ！".format(suffrage_role.mention), embed=new_embed)
 
         # 保存してDone
         self.vote_record.add(sent_message.id, tweet_content)
