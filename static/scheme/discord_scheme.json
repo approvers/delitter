@@ -10,7 +10,7 @@
     "emoji_ids",
     "prefix",
     "suffrage_role_id",
-    "judge_standard"
+    "approve_rate"
   ],
 
   "properties": {
@@ -36,15 +36,8 @@
     "suffrage_role_id": {
       "type": "integer"
     },
-    "judge_standard": {
-      "properties": {
-        "total": {
-          "type": "integer"
-        },
-        "rate": {
-          "type": "integer"
-        }
-      }
+    "approve_rate": {
+      "type": "integer"
     }
   }
 

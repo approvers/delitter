@@ -67,8 +67,6 @@ class MainClient(discord.Client):
         log("client-login", "設定に問題はありませんでした。コマンドのインスタンスを生成します…")
         self.command_register.initialize_commands(activity_channel.guild, self.vote_record)
 
-        log("client-login", "ReactionEventを初期化します…")
-
         log("client-login", "問題は発生しませんでした。起動メッセージを送信します…")
         await activity_channel.send("***†Delitter Ready†***")
 
