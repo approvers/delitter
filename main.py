@@ -3,6 +3,9 @@ main.py
 ------------------------
 プログラムのエントリポイント。
 """
+import base64
+import os
+
 from lib.data.tweet_votes_record import TweetsVoteRecord
 from lib.discord.client import MainClient
 from lib.discord.op.command.command_register import CommandRegister
@@ -15,11 +18,18 @@ from lib.settings import twitter, discord
 from lib.twitter.tweeter import Tweeter
 
 if __name__ == '__main__':
-    with open("settings/discord.json") as f:
-        discord_setting: discord.DiscordSetting = discord.create(f)
 
-    with open("settings/twitter-api.json") as f:
-        twitter_setting: twitter.TwitterSetting = twitter.create(f)
+    if "DELITTER_DISCORD_SETTING_JSON_B64" not in os.environ:
+        raise RuntimeError("DELITTER_DISCORD_SETTING_JSON_B64 is not set!")
+
+    if "DELITTER_TWITTER_SETTING_JSON_B64" not in os.environ:
+        raise RuntimeError("DELITTER_TWITTER_SETTING_JSON_B64 is not set!")
+
+    raw_discord_setting = base64.b64decode(os.environ["DELITTER_DISCORD_SETTING_JSON_B64"]).decode("utf-8")
+    raw_twitter_setting = base64.b64decode(os.environ["DELITTER_TWITTER_SETTING_JSON_B64"]).decode("utf-8")
+
+    discord_setting: discord.DiscordSetting = discord.create(raw_discord_setting)
+    twitter_setting: twitter.TwitterSetting = twitter.create(raw_twitter_setting)
 
     votes_record = TweetsVoteRecord()
     command_register = CommandRegister(discord_setting)
