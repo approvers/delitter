@@ -36,10 +36,10 @@ class TwitterSetting:
         self.access_secret_token = access_token_secret
 
 
-def create(file: TextIO) -> TwitterSetting:
+def create(json_text: str) -> TwitterSetting:
     """
     Jsonファイルから設定をパースしてTwitterSettingを生成する
-    :param file: Jsonファイルを参照しているIO。
+    :param json_text: Jsonで記述された設定。
     :return: 生成されたTwitterSetting
     """
     json_type = Dict[str, Union[None, str, int]]
@@ -48,7 +48,7 @@ def create(file: TextIO) -> TwitterSetting:
     with open("static/scheme/twitter_scheme.json") as f:
         scheme_json: json_type = json.load(f)
 
-    raw_json: json_type = json.load(file)
+    raw_json: json_type = json.loads(json_text)
     validate(raw_json, scheme_json)
 
     raw_json.setdefault("token", None)
